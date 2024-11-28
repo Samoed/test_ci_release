@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>autointent.context.data_handler._data_handler &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autointent.context.data_handler._data_handler</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Data Handler file.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">cast</span>
+
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">set_seed</span>
+
+<span class="kn">from</span> <span class="nn">autointent.custom_types</span> <span class="kn">import</span> <span class="n">LabelType</span>
+
+<span class="kn">from</span> <span class="nn">._dataset</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">Split</span>
+<span class="kn">from</span> <span class="nn">._stratification</span> <span class="kn">import</span> <span class="n">split_dataset</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">RegexPatterns</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Regex patterns for each intent class.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intent class id.&quot;&quot;&quot;</span>
+    <span class="n">regexp_full_match</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Full match regex patterns.&quot;&quot;&quot;</span>
+    <span class="n">regexp_partial_match</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Partial match regex patterns.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="DataHandler">
+<a class="viewcode-back" href="../../../../autoapi/autointent/context/data_handler/index.html#autointent.context.data_handler.DataHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">DataHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data handler class.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+        <span class="n">force_multilabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the data handler.</span>
+
+<span class="sd">        :param dataset: Training dataset.</span>
+<span class="sd">        :param force_multilabel: If True, force the dataset to be multilabel.</span>
+<span class="sd">        :param random_seed: Seed for random number generation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">set_seed</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="k">if</span> <span class="n">force_multilabel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">to_multilabel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">multilabel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">encode_labels</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">Split</span><span class="o">.</span><span class="n">TEST</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Splitting dataset into train and test splits&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">split_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">split</span> <span class="o">==</span> <span class="n">Split</span><span class="o">.</span><span class="n">OOS</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">n_classes_split</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_n_classes</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_classes_split</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Number of classes in split &#39;</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s2">&#39; doesn&#39;t match initial number of classes &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">n_classes_split</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">regexp_patterns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">RegexPatterns</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">intent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="n">regexp_full_match</span><span class="o">=</span><span class="n">intent</span><span class="o">.</span><span class="n">regexp_full_match</span><span class="p">,</span>
+                <span class="n">regexp_partial_match</span><span class="o">=</span><span class="n">intent</span><span class="o">.</span><span class="n">regexp_partial_match</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">intent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">intents</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">intent_descriptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">intent</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">intent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">intents</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logger</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">multilabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the dataset is multilabel.</span>
+
+<span class="sd">        :return: True if the dataset is multilabel, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">multilabel</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of classes in the dataset.</span>
+
+<span class="sd">        :return: Number of classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">n_classes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">train_utterances</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the training utterances.</span>
+
+<span class="sd">        :return: List of training utterances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">Split</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">utterance_feature</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">train_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LabelType</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the training labels.</span>
+
+<span class="sd">        :return: List of training labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">LabelType</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">Split</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">label_feature</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">test_utterances</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the test utterances.</span>
+
+<span class="sd">        :return: List of test utterances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">Split</span><span class="o">.</span><span class="n">TEST</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">utterance_feature</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">test_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LabelType</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the test labels.</span>
+
+<span class="sd">        :return: List of test labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">LabelType</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">Split</span><span class="o">.</span><span class="n">TEST</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">label_feature</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">oos_utterances</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the out-of-scope utterances.</span>
+
+<span class="sd">        :return: List of out-of-scope utterances if available, otherwise an empty list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_oos_samples</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">Split</span><span class="o">.</span><span class="n">OOS</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">utterance_feature</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="DataHandler.has_oos_samples">
+<a class="viewcode-back" href="../../../../autoapi/autointent/context/data_handler/index.html#autointent.context.data_handler.DataHandler.has_oos_samples">[docs]</a>
+    <span class="k">def</span> <span class="nf">has_oos_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if there are out-of-scope samples.</span>
+
+<span class="sd">        :return: True if there are out-of-scope samples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Split</span><span class="o">.</span><span class="n">OOS</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span></div>
+
+
+<div class="viewcode-block" id="DataHandler.dump">
+<a class="viewcode-back" href="../../../../autoapi/autointent/context/data_handler/index.html#autointent.context.data_handler.DataHandler.dump">[docs]</a>
+    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dump the dataset splits.</span>
+
+<span class="sd">        :return: Dataset dump.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

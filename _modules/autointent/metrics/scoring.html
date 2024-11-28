@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>autointent.metrics.scoring &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autointent.metrics.scoring</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Scoring metrics for multiclass and multilabel classification tasks.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">coverage_error</span><span class="p">,</span> <span class="n">label_ranking_average_precision_score</span><span class="p">,</span> <span class="n">label_ranking_loss</span><span class="p">,</span> <span class="n">roc_auc_score</span>
+
+<span class="kn">from</span> <span class="nn">._converter</span> <span class="kn">import</span> <span class="n">transform</span>
+<span class="kn">from</span> <span class="nn">._custom_types</span> <span class="kn">import</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">SCORES_VALUE_TYPE</span>
+<span class="kn">from</span> <span class="nn">.prediction</span> <span class="kn">import</span> <span class="n">PredictionMetricFn</span><span class="p">,</span> <span class="n">prediction_accuracy</span><span class="p">,</span> <span class="n">prediction_f1</span><span class="p">,</span> <span class="n">prediction_precision</span><span class="p">,</span> <span class="n">prediction_recall</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ScoringMetricFn">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.ScoringMetricFn">[docs]</a>
+<span class="k">class</span> <span class="nc">ScoringMetricFn</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Protocol for scoring metrics.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ScoringMetricFn.__call__">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.ScoringMetricFn.__call__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate scoring metric.</span>
+
+<span class="sd">        :param labels: ground truth labels for each utterance</span>
+<span class="sd">            - multiclass case: list representing an array of shape `(n_samples,)` with integer values</span>
+<span class="sd">            - multilabel case: list representing a matrix of shape `(n_samples, n_classes)` with integer values</span>
+<span class="sd">        :param scores: for each utterance, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">        :return: Score of the scoring metric</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="scoring_log_likelihood">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_log_likelihood">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_log_likelihood</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Supports multiclass and multilabel cases.</span>
+
+<span class="sd">    Multiclass case:</span>
+<span class="sd">    Mean negative cross-entropy for each utterance classification result:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \frac{1}{\ell}\sum_{i=1}^{\ell}\log(s[y[i]])</span>
+
+<span class="sd">    where ``s[y[i]]`` is the predicted score of the ``i``-th utterance having the ground truth label.</span>
+
+<span class="sd">    Multilabel case:</span>
+<span class="sd">    Mean negative binary cross-entropy:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \frac{1}{\ell}\sum_{i=1}^\ell\sum_{c=1}^C\Big[y[i,c]\cdot\log(s[i,c])+(1-y[i,c])\cdot\log(1-s[i,c])\Big]</span>
+
+<span class="sd">    where ``s[i,c]`` is the predicted score of the ``i``-th utterance having the ground truth label ``c``.</span>
+
+<span class="sd">    :param labels: Ground truth labels for each utterance.</span>
+<span class="sd">    :param scores: For each utterance, a list containing scores for each of `n_classes` classes.</span>
+<span class="sd">    :param eps: A small value to avoid division by zero.</span>
+<span class="sd">    :return: Score of the scoring metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">labels_array</span><span class="p">,</span> <span class="n">scores_array</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+    <span class="n">scores_array</span><span class="p">[</span><span class="n">scores_array</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">scores_array</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scores_array</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;One or more scores are not from (0,1]. It is incompatible with `scoring_log_likelihood` metric&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">labels_array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">relevant_scores</span> <span class="o">=</span> <span class="n">scores_array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels_array</span><span class="p">)),</span> <span class="n">labels_array</span><span class="p">]</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">relevant_scores</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">labels_array</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">scores_array</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">labels_array</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">scores_array</span><span class="p">)</span>
+        <span class="n">clipped_one</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">clipped_one</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">res</span>  <span class="c1"># type: ignore[no-any-return]</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_roc_auc">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_roc_auc">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_roc_auc</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Supports multiclass and multilabel cases.</span>
+
+<span class="sd">    Macro averaged roc-auc for utterance classification task, i.e.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \frac{1}{C}\sum_{k=1}^C ROCAUC(scores[:, k], labels[:, k])</span>
+
+<span class="sd">    where ``C`` is the number of classes</span>
+
+<span class="sd">    :param labels: ground truth labels for each utterance</span>
+<span class="sd">    :param scores: for each utterance, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Score of the scoring metric</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">labels_</span><span class="p">,</span> <span class="n">scores_</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+
+    <span class="n">n_classes</span> <span class="o">=</span> <span class="n">scores_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">labels_</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">labels_</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels_</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_classes</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">labels_</span><span class="p">,</span> <span class="n">scores_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore[no-any-return]</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_calculate_prediction_metric</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">PredictionMetricFn</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate prediction metric.</span>
+
+<span class="sd">    This function applies the given prediction metric function :func:`func` to evaluate the predictions.</span>
+<span class="sd">    It transforms the inputs and computes predictions based on the input scores:</span>
+<span class="sd">    - For multiclass classification, predictions are generated using :func:`np.argmax`.</span>
+<span class="sd">    - For multilabel classification, predictions are generated using a threshold of 0.5.</span>
+
+<span class="sd">    :param func: prediction metric function</span>
+<span class="sd">    :param labels: ground truth labels for each utterance</span>
+<span class="sd">    :param scores: for each utterance, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Score of the scoring metric</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">labels_</span><span class="p">,</span> <span class="n">scores_</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">labels_</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">pred_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">labels_</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pred_labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">scores_</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># noqa: PLR2004</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">labels_</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<div class="viewcode-block" id="scoring_accuracy">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_accuracy">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_accuracy</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate accuracy for multiclass and multilabel classification.</span>
+
+<span class="sd">    This function computes accuracy by using :func:`prediction_accuracy` to evaluate predictions and</span>
+<span class="sd">    :func:`calculate_prediction_metric` to handle the computation.</span>
+
+<span class="sd">    :param labels: ground truth labels for each utterance</span>
+<span class="sd">    :param scores: for each utterance, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Score of the scoring metric</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_calculate_prediction_metric</span><span class="p">(</span><span class="n">prediction_accuracy</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_f1">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_f1">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_f1</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the F1 score for multiclass and multilabel classification.</span>
+
+<span class="sd">    This function computes the F1 score by using :func:`prediction_f1` to evaluate predictions and</span>
+<span class="sd">    :func:`calculate_prediction_metric` to handle the computation.</span>
+
+<span class="sd">    :param labels: Ground truth labels for each sample</span>
+<span class="sd">    :param scores: For each sample, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: F1 score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_calculate_prediction_metric</span><span class="p">(</span><span class="n">prediction_f1</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_precision">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_precision">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_precision</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate precision for multiclass and multilabel classification.</span>
+
+<span class="sd">    This function computes precision by using :func:`prediction_precision` to evaluate predictions and</span>
+<span class="sd">    :func:`calculate_prediction_metric` to handle the computation.</span>
+
+<span class="sd">    :param labels: Ground truth labels for each sample</span>
+<span class="sd">    :param scores: For each sample, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Precision score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_calculate_prediction_metric</span><span class="p">(</span><span class="n">prediction_precision</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_recall">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_recall">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_recall</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate recall for multiclass and multilabel classification.</span>
+
+<span class="sd">    This function computes recall by using :func:`prediction_recall` to evaluate predictions and</span>
+<span class="sd">    :func:`calculate_prediction_metric` to handle the computation.</span>
+
+<span class="sd">    :param labels: Ground truth labels for each sample</span>
+<span class="sd">    :param scores: For each sample, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Recall score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_calculate_prediction_metric</span><span class="p">(</span><span class="n">prediction_recall</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_hit_rate">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_hit_rate">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_hit_rate</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the hit rate for multilabel classification.</span>
+
+<span class="sd">    The hit rate measures the fraction of cases where the top-ranked label is in the set</span>
+<span class="sd">    of true labels for the instance.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \text{Hit Rate} = \frac{1}{N} \sum_{i=1}^N \mathbb{1}(y_{\text{top},i} \in y_{\text{true},i})</span>
+
+<span class="sd">    where:</span>
+<span class="sd">    - :math:`N` is the total number of instances,</span>
+<span class="sd">    - :math:`y_{\text{top},i}` is the top-ranked predicted label for instance :math:`i`,</span>
+<span class="sd">    - :math:`y_{\text{true},i}` is the set of ground truth labels for instance :math:`i`.</span>
+
+<span class="sd">    :param labels: Ground truth labels for each sample</span>
+<span class="sd">    :param scores: For each sample, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Hit rate score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">labels_</span><span class="p">,</span> <span class="n">scores_</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+
+    <span class="n">top_ranked_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">scores_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">is_in</span> <span class="o">=</span> <span class="n">labels_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span> <span class="n">top_ranked_labels</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">is_in</span><span class="p">)</span>  <span class="c1"># type: ignore[no-any-return]</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_neg_coverage">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_neg_coverage">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_neg_coverage</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Supports multilabel classification.</span>
+
+<span class="sd">    Evaluates how far we need, on average, to go down the list of labels in order to cover</span>
+<span class="sd">    all the proper labels of the instance.</span>
+
+<span class="sd">    - The ideal value is 1</span>
+<span class="sd">    - The worst value is 0</span>
+
+<span class="sd">    The result is equivalent to executing the following code:</span>
+
+<span class="sd">    &gt;&gt;&gt; def compute_rank_metric():</span>
+<span class="sd">    ...     import numpy as np</span>
+<span class="sd">    ...     scores = np.array([[1, 2, 3]])</span>
+<span class="sd">    ...     labels = np.array([1, 0, 0])</span>
+<span class="sd">    ...     n_classes = scores.shape[1]</span>
+<span class="sd">    ...     from scipy.stats import rankdata</span>
+<span class="sd">    ...     int_ranks = rankdata(scores, axis=1)</span>
+<span class="sd">    ...     filtered_ranks = int_ranks * labels</span>
+<span class="sd">    ...     max_ranks = np.max(filtered_ranks, axis=1)</span>
+<span class="sd">    ...     float_ranks = (max_ranks - 1) / (n_classes - 1)</span>
+<span class="sd">    ...     return float(1 - np.mean(float_ranks))</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;{compute_rank_metric():.1f}&quot;)</span>
+<span class="sd">    1.0</span>
+
+<span class="sd">    :param labels: ground truth labels for each utterance</span>
+<span class="sd">    :param scores: for each utterance, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Score of the scoring metric</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">labels_</span><span class="p">,</span> <span class="n">scores_</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+
+    <span class="n">n_classes</span> <span class="o">=</span> <span class="n">scores_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">coverage_error</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_classes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore[no-any-return]</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_neg_ranking_loss">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_neg_ranking_loss">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_neg_ranking_loss</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    supports multilabel.</span>
+
+<span class="sd">    Compute the average number of label pairs that are incorrectly ordered given y_score</span>
+<span class="sd">    weighted by the size of the label set and the number of labels not in the label set.</span>
+
+<span class="sd">    the ideal value is 0</span>
+
+<span class="sd">    :param labels: ground truth labels for each utterance</span>
+<span class="sd">    :param scores: for each utterance, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: Score of the scoring metric</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">label_ranking_loss</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>  <span class="c1"># type: ignore[no-any-return]</span></div>
+
+
+
+<div class="viewcode-block" id="scoring_map">
+<a class="viewcode-back" href="../../../autoapi/autointent/metrics/scoring/index.html#autointent.metrics.scoring_map">[docs]</a>
+<span class="k">def</span> <span class="nf">scoring_map</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">LABELS_VALUE_TYPE</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="n">SCORES_VALUE_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the mean average precision (MAP) score for multilabel classification.</span>
+
+<span class="sd">    The MAP score measures the precision at different levels of ranking,</span>
+<span class="sd">    averaged across all queries. The ideal value is 1, indicating perfect ranking, while the worst value is 0.</span>
+
+<span class="sd">    This function utilizes :func:`sklearn.metrics.label_ranking_average_precision_score` for computation.</span>
+
+<span class="sd">    :param labels: ground truth labels for each sample</span>
+<span class="sd">    :param scores: for each sample, this list contains scores for each of `n_classes` classes</span>
+<span class="sd">    :return: mean average precision score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">label_ranking_average_precision_score</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>  <span class="c1"># type: ignore[no-any-return]</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

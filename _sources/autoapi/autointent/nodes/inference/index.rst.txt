@@ -1,0 +1,44 @@
+autointent.nodes.inference
+==========================
+
+.. py:module:: autointent.nodes.inference
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.nodes.inference.InferenceNode
+
+
+Package Contents
+----------------
+
+.. py:class:: InferenceNode(module, node_type)
+
+   Inference node class.
+
+
+   .. py:attribute:: module
+
+
+   .. py:attribute:: node_type
+
+
+   .. py:method:: from_config(config)
+      :classmethod:
+
+
+      Initialize from config.
+
+      :param config: Configuration for the node.
+
+
+
+   .. py:method:: clear_cache()
+
+      Clear cache.
+
+
+

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>autointent.modules.scoring._knn.knn &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autointent.modules.scoring._knn.knn</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;KNNScorer class for k-nearest neighbors scoring.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">autointent.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">autointent.context.vector_index_client</span> <span class="kn">import</span> <span class="n">VectorIndex</span><span class="p">,</span> <span class="n">VectorIndexClient</span><span class="p">,</span> <span class="n">get_db_dir</span>
+<span class="kn">from</span> <span class="nn">autointent.custom_types</span> <span class="kn">import</span> <span class="n">WEIGHT_TYPES</span><span class="p">,</span> <span class="n">BaseMetadataDict</span><span class="p">,</span> <span class="n">LabelType</span>
+<span class="kn">from</span> <span class="nn">autointent.modules.scoring</span> <span class="kn">import</span> <span class="n">ScoringModule</span>
+
+<span class="kn">from</span> <span class="nn">.weighting</span> <span class="kn">import</span> <span class="n">apply_weights</span>
+
+
+<span class="k">class</span> <span class="nc">KNNScorerDumpMetadata</span><span class="p">(</span><span class="n">BaseMetadataDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Metadata for dumping the state of a KNNScorer.</span>
+
+<span class="sd">    :ivar n_classes: Number of classes in the dataset.</span>
+<span class="sd">    :ivar multilabel: Whether the task is multilabel classification.</span>
+<span class="sd">    :ivar db_dir: Path to the database directory.</span>
+<span class="sd">    :ivar batch_size: Batch size used for embedding.</span>
+<span class="sd">    :ivar max_length: Maximum sequence length for embedding, or None if not specified.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_classes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">multilabel</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">db_dir</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="KNNScorer">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer">[docs]</a>
+<span class="k">class</span> <span class="nc">KNNScorer</span><span class="p">(</span><span class="n">ScoringModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    K-nearest neighbors (KNN) scorer for intent classification.</span>
+
+<span class="sd">    This module uses a vector index to retrieve nearest neighbors for query utterances</span>
+<span class="sd">    and applies a weighting strategy to compute class probabilities.</span>
+
+<span class="sd">    :ivar weights: Weighting strategy used for scoring.</span>
+<span class="sd">    :ivar _vector_index: VectorIndex instance for neighbor retrieval.</span>
+<span class="sd">    :ivar name: Name of the scorer, defaults to &quot;knn&quot;.</span>
+<span class="sd">    :ivar prebuilt_index: Flag indicating if the vector index is prebuilt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">weights</span><span class="p">:</span> <span class="n">WEIGHT_TYPES</span>
+    <span class="n">_vector_index</span><span class="p">:</span> <span class="n">VectorIndex</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;knn&quot;</span>
+    <span class="n">prebuilt_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">embedder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="n">WEIGHT_TYPES</span><span class="p">,</span>
+        <span class="n">db_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the KNNScorer.</span>
+
+<span class="sd">        :param embedder_name: Name of the embedder used for vectorization.</span>
+<span class="sd">        :param k: Number of closest neighbors to consider during inference.</span>
+<span class="sd">        :param weights: Weighting strategy:</span>
+<span class="sd">            - &quot;uniform&quot; (or False): Equal weight for all neighbors.</span>
+<span class="sd">            - &quot;distance&quot; (or True): Weight inversely proportional to distance.</span>
+<span class="sd">            - &quot;closest&quot;: Only the closest neighbor of each class is weighted.</span>
+<span class="sd">        :param db_dir: Path to the database directory, or None to use default.</span>
+<span class="sd">        :param device: Device to run operations on, e.g., &quot;cpu&quot; or &quot;cuda&quot;.</span>
+<span class="sd">        :param batch_size: Batch size for embedding generation, defaults to 32.</span>
+<span class="sd">        :param max_length: Maximum sequence length for embedding, or None for default.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedder_name</span> <span class="o">=</span> <span class="n">embedder_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db_dir</span> <span class="o">=</span> <span class="n">db_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">db_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the database directory for the vector index.</span>
+
+<span class="sd">        :return: Path to the database directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db_dir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_db_dir</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_dir</span>
+
+<div class="viewcode-block" id="KNNScorer.from_context">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.from_context">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_context</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="n">WEIGHT_TYPES</span><span class="p">,</span>
+        <span class="n">embedder_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a KNNScorer instance using a Context object.</span>
+
+<span class="sd">        :param context: Context containing configurations and utilities.</span>
+<span class="sd">        :param k: Number of closest neighbors to consider during inference.</span>
+<span class="sd">        :param weights: Weighting strategy for scoring.</span>
+<span class="sd">        :param embedder_name: Name of the embedder, or None to use the best embedder.</span>
+<span class="sd">        :return: Initialized KNNScorer instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">embedder_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">embedder_name</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">optimization_info</span><span class="o">.</span><span class="n">get_best_embedder</span><span class="p">()</span>
+            <span class="n">prebuilt_index</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prebuilt_index</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">vector_index_client</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">embedder_name</span><span class="p">)</span>
+
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">embedder_name</span><span class="o">=</span><span class="n">embedder_name</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+            <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+            <span class="n">db_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get_db_dir</span><span class="p">()),</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get_device</span><span class="p">(),</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get_batch_size</span><span class="p">(),</span>
+            <span class="n">max_length</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get_max_length</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">prebuilt_index</span> <span class="o">=</span> <span class="n">prebuilt_index</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.get_embedder_name">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.get_embedder_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_embedder_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the name of the embedder.</span>
+
+<span class="sd">        :return: Embedder name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedder_name</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.fit">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterances</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LabelType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the scorer by training or loading the vector index.</span>
+
+<span class="sd">        :param utterances: List of training utterances.</span>
+<span class="sd">        :param labels: List of labels corresponding to the utterances.</span>
+<span class="sd">        :raises ValueError: If the vector index mismatches the provided utterances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">multilabel</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">multilabel</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">vector_index_client</span> <span class="o">=</span> <span class="n">VectorIndexClient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_dir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prebuilt_index</span><span class="p">:</span>
+            <span class="c1"># this happens only after RetrievalNode optimization</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span> <span class="o">=</span> <span class="n">vector_index_client</span><span class="o">.</span><span class="n">get_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedder_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">utterances</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span><span class="o">.</span><span class="n">texts</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Vector index mismatches provided utterances&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span> <span class="o">=</span> <span class="n">vector_index_client</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedder_name</span><span class="p">,</span> <span class="n">utterances</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.predict">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterances</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict class probabilities for the given utterances.</span>
+
+<span class="sd">        :param utterances: List of query utterances.</span>
+<span class="sd">        :return: Array of predicted probabilities for each class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">utterances</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.predict_with_metadata">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.predict_with_metadata">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_with_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterances</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict class probabilities along with metadata for the given utterances.</span>
+
+<span class="sd">        :param utterances: List of query utterances.</span>
+<span class="sd">        :return: Tuple of predicted probabilities and metadata with neighbor information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scores</span><span class="p">,</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">utterances</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;neighbors&quot;</span><span class="p">:</span> <span class="n">utterance_neighbors</span><span class="p">}</span> <span class="k">for</span> <span class="n">utterance_neighbors</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">scores</span><span class="p">,</span> <span class="n">metadata</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.clear_cache">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.clear_cache">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear cached data in memory used by the vector index.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span><span class="o">.</span><span class="n">clear_ram</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.dump">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.dump">[docs]</a>
+    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the KNNScorer&#39;s metadata and vector index to disk.</span>
+
+<span class="sd">        :param path: Path to the directory where assets will be dumped.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">KNNScorerDumpMetadata</span><span class="p">(</span>
+            <span class="n">db_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db_dir</span><span class="p">,</span>
+            <span class="n">n_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span>
+            <span class="n">multilabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multilabel</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">max_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">dump_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="p">(</span><span class="n">dump_dir</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict_name</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dump_dir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="KNNScorer.load">
+<a class="viewcode-back" href="../../../../../autoapi/autointent/modules/scoring/index.html#autointent.modules.KNNScorer.load">[docs]</a>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the KNNScorer&#39;s metadata and vector index from disk.</span>
+
+<span class="sd">        :param path: Path to the directory containing the dumped assets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dump_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="p">(</span><span class="n">dump_dir</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict_name</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span> <span class="n">KNNScorerDumpMetadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;n_classes&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multilabel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;multilabel&quot;</span><span class="p">]</span>
+
+        <span class="n">vector_index_client</span> <span class="o">=</span> <span class="n">VectorIndexClient</span><span class="p">(</span>
+            <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">db_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;db_dir&quot;</span><span class="p">],</span>
+            <span class="n">embedder_batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;batch_size&quot;</span><span class="p">],</span>
+            <span class="n">embedder_max_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;max_length&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span> <span class="o">=</span> <span class="n">vector_index_client</span><span class="o">.</span><span class="n">get_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedder_name</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utterances</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict class probabilities and retrieve neighbors for the given utterances.</span>
+
+<span class="sd">        :param utterances: List of query utterances.</span>
+<span class="sd">        :return: Tuple containing class probabilities and neighbor utterances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_index</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">utterances</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">apply_weights</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">distances</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">multilabel</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scores</span><span class="p">,</span> <span class="n">neighbors</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

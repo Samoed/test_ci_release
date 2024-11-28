@@ -1,0 +1,5 @@
+Pipeline Optimization
+=====================
+
+.. nbgallery::
+   tutorials.pipeline_optimization.demo.py

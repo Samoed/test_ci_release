@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quick Start &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Key Concepts" href="concepts.html" />
+    <link rel="prev" title="AutoIntent documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>AutoIntent можно установить с помощью менеджера пакетов <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/voorhs/AutoIntent.git
+<span class="nb">cd</span><span class="w"> </span>AutoIntent
+pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>Библиотека совместима с Python 3.10+.</p>
+</section>
+<section id="data-format">
+<h2>Data Format<a class="headerlink" href="#data-format" title="Link to this heading">¶</a></h2>
+<p>Для работы с AutoIntent нужно привести обучающие данные в специальный формат.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Написать когда закончится рефакторинг датасетов</p>
+</div>
+</section>
+<section id="automl-goes-brrr">
+<h2>AutoML goes brrr…<a class="headerlink" href="#automl-goes-brrr" title="Link to this heading">¶</a></h2>
+<p>Когда данные готовы, можно запускать построение оптимального классификатора.</p>
+<p>Из командной строки:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>autointent<span class="w"> </span>data.train_path<span class="o">=</span><span class="s2">&quot;path/to/your/data.json&quot;</span>
+</pre></div>
+</div>
+<p>Эта команда запустит поиск гиперпараметров в дефолтном пространстве поиска. Больше про пространство поиска и как выбирать его кастомным смотрите в <span class="xref std std-doc">search_space</span>.</p>
+<p>По итогу в текущей рабочей директории создастся папка <code class="docutils literal notranslate"><span class="pre">runs</span></code>, в которой будет сохранен подобранный классификатор, готовый к инференсу. Больше про папку рана и что в нем сохраняется смотрите в <span class="xref std std-doc">optimization_results</span>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Построить классификатор из данных можно и с помощью Python API. Больше об этом смотрите в нашем туториале <a class="reference internal" href="tutorials/index_pipeline_optimization.html"><span class="doc">Pipeline Optimization</span></a>.</p>
+</div>
+</section>
+<section id="inference">
+<h2>Inference<a class="headerlink" href="#inference" title="Link to this heading">¶</a></h2>
+<p>Чтобы применить построенный классификатор к новым данным, достаточно воспользоваться нашим Python API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autointent</span> <span class="kn">import</span> <span class="n">InferencePipeline</span>
+
+<span class="n">inference_pipeline</span> <span class="o">=</span> <span class="n">InferencePipeline</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/run/directory&quot;</span><span class="p">)</span>
+<span class="n">utterances</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;123&quot;</span><span class="p">,</span> <span class="s2">&quot;hello world&quot;</span><span class="p">]</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">inference_pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">utterances</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">AutoIntent documentation</a></li>
+      <li>Next: <a href="concepts.html" title="next chapter">Key Concepts</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/quickstart.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

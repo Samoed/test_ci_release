@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>autointent.modules.retrieval &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="autointent.modules.scoring" href="../scoring/index.html" />
+    <link rel="prev" title="autointent.modules.prediction" href="../prediction/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-autointent.modules.retrieval">
+<span id="autointent-modules-retrieval"></span><h1>autointent.modules.retrieval<a class="headerlink" href="#module-autointent.modules.retrieval" title="Link to this heading">¶</a></h1>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.modules.retrieval.RetrievalModule" title="autointent.modules.retrieval.RetrievalModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RetrievalModule</span></code></a></p></td>
+<td><p>Base class for retrieval modules.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.modules.retrieval.VectorDBModule" title="autointent.modules.retrieval.VectorDBModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorDBModule</span></code></a></p></td>
+<td><p>Module for managing retrieval operations using a vector database.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.RetrievalModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.modules.retrieval.</span></span><span class="sig-name descname"><span class="pre">RetrievalModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_base.html#RetrievalModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.RetrievalModule" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#autointent.modules.Module" title="autointent.modules.Module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autointent.modules.Module</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for retrieval modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>k</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.RetrievalModule.k">
+<span class="sig-name descname"><span class="pre">k</span></span><a class="headerlink" href="#autointent.modules.retrieval.RetrievalModule.k" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.modules.retrieval.</span></span><span class="sig-name descname"><span class="pre">VectorDBModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">autointent.modules.retrieval._base.RetrievalModule</span></code></p>
+<p>Module for managing retrieval operations using a vector database.</p>
+<p>This class provides methods for indexing, querying, and managing a vector database for tasks
+such as nearest neighbor retrieval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<em>int</em>)</p></li>
+<li><p><strong>embedder_name</strong> (<em>str</em>)</p></li>
+<li><p><strong>db_dir</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>device</strong> (<em>str</em>)</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>)</p></li>
+<li><p><strong>max_length</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.vector_index">
+<span class="sig-name descname"><span class="pre">vector_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../context/vector_index_client/index.html#autointent.context.vector_index_client.VectorIndex" title="autointent.context.vector_index_client.VectorIndex"><span class="pre">autointent.context.vector_index_client.VectorIndex</span></a></em><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.vector_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vector_db'</span></em><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.embedder_name">
+<span class="sig-name descname"><span class="pre">embedder_name</span></span><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.embedder_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.device">
+<span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.device" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.batch_size">
+<span class="sig-name descname"><span class="pre">batch_size</span></span><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.batch_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.max_length">
+<span class="sig-name descname"><span class="pre">max_length</span></span><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.max_length" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.from_context">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.from_context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.from_context" title="Link to this definition">¶</a></dt>
+<dd><p>Create a VectorDBModule instance using a Context object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context</strong> (<a class="reference internal" href="../../context/index.html#autointent.context.Context" title="autointent.context.Context"><em>autointent.context.Context</em></a>) – The context containing configurations and utilities.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – Number of nearest neighbors to retrieve.</p></li>
+<li><p><strong>embedder_name</strong> (<em>str</em>) – Name of the embedder to use.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Initialized VectorDBModule instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>typing_extensions.Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.db_dir">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">db_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.db_dir" title="Link to this definition">¶</a></dt>
+<dd><p>Get the directory for the vector database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the database directory.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utterances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the vector index using the provided utterances and labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>utterances</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of text data to index.</p></li>
+<li><p><strong>labels</strong> (<em>list</em><em>[</em><em>autointent.custom_types.LabelType</em><em>]</em>) – List of corresponding labels for the utterances.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.score" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the retrieval model using a specified metric function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>context</strong> (<a class="reference internal" href="../../context/index.html#autointent.context.Context" title="autointent.context.Context"><em>autointent.context.Context</em></a>) – The context containing test data and labels.</p></li>
+<li><p><strong>metric_fn</strong> (<a class="reference internal" href="../../metrics/index.html#autointent.metrics.RetrievalMetricFn" title="autointent.metrics.RetrievalMetricFn"><em>autointent.metrics.RetrievalMetricFn</em></a>) – Function to compute the retrieval metric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Computed metric score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.get_assets">
+<span class="sig-name descname"><span class="pre">get_assets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.get_assets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.get_assets" title="Link to this definition">¶</a></dt>
+<dd><p>Get the retriever artifacts for this module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A RetrieverArtifact object containing embedder information.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../context/optimization_info/index.html#autointent.context.optimization_info.RetrieverArtifact" title="autointent.context.optimization_info.RetrieverArtifact">autointent.context.optimization_info.RetrieverArtifact</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.clear_cache">
+<span class="sig-name descname"><span class="pre">clear_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.clear_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.clear_cache" title="Link to this definition">¶</a></dt>
+<dd><p>Clear cached data in memory used by the vector index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.dump">
+<span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.dump" title="Link to this definition">¶</a></dt>
+<dd><p>Save the module’s metadata and vector index to a specified directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to the directory where assets will be dumped.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.load" title="Link to this definition">¶</a></dt>
+<dd><p>Load the module’s metadata and vector index from a specified directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to the directory containing the dumped assets.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.modules.retrieval.VectorDBModule.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utterances</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/modules/retrieval/_vectordb.html#VectorDBModule.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.modules.retrieval.VectorDBModule.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Predict the nearest neighbors for a list of utterances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>utterances</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of utterances for which nearest neighbors are to be retrieved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing:
+- labels: List of retrieved labels for each utterance.
+- distances: List of distances to the nearest neighbors.
+- texts: List of retrieved text data corresponding to the neighbors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[list[int | list[int]]], list[list[float]], list[list[str]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">autointent</a><ul>
+  <li><a href="../index.html">autointent.modules</a><ul>
+      <li>Previous: <a href="../prediction/index.html" title="previous chapter">autointent.modules.prediction</a></li>
+      <li>Next: <a href="../scoring/index.html" title="next chapter">autointent.modules.scoring</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/autointent/modules/retrieval/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

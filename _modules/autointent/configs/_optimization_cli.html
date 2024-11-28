@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>autointent.configs._optimization_cli &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autointent.configs._optimization_cli</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Configuration for the optimization process.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">hydra.core.config_store</span> <span class="kn">import</span> <span class="n">ConfigStore</span>
+<span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">MISSING</span>
+
+<span class="kn">from</span> <span class="nn">._name</span> <span class="kn">import</span> <span class="n">get_run_name</span>
+
+
+<div class="viewcode-block" id="DataConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.DataConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DataConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the data used in the optimization process.&quot;&quot;&quot;</span>
+
+    <span class="n">train_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">MISSING</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the training data&quot;&quot;&quot;</span>
+    <span class="n">test_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the testing data. If None, no testing data will be used&quot;&quot;&quot;</span>
+    <span class="n">force_multilabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Force multilabel classification even if the data is multiclass&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="TaskConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.TaskConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TaskConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the task to optimize.&quot;&quot;&quot;</span>
+
+    <span class="n">search_space_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the search space configuration file. If None, the default search space will be used&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LoggingConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.LoggingConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LoggingConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the logging.&quot;&quot;&quot;</span>
+
+    <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the run. If None, a random name will be generated&quot;&quot;&quot;</span>
+    <span class="n">dirpath</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the directory where the logs will be saved.</span>
+<span class="sd">    If None, the logs will be saved in the current working directory&quot;&quot;&quot;</span>
+    <span class="n">dump_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the directory where the modules will be dumped. If None, the modules will not be dumped&quot;&quot;&quot;</span>
+    <span class="n">dump_modules</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to dump the modules or not&quot;&quot;&quot;</span>
+    <span class="n">clear_ram</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to clear the RAM after dumping the modules&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LoggingConfig.__post_init__">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.LoggingConfig.__post_init__">[docs]</a>
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the run name, directory path and dump directory.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_run_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_dirpath</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_dump_dir</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LoggingConfig.define_run_name">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.LoggingConfig.define_run_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">define_run_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the run name. If None, a random name will be generated.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">get_run_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LoggingConfig.define_dirpath">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.LoggingConfig.define_dirpath">[docs]</a>
+    <span class="k">def</span> <span class="nf">define_dirpath</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the directory path. If None, the logs will be saved in the current working directory.&quot;&quot;&quot;</span>
+        <span class="n">dirpath</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;runs&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirpath</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirpath</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirpath</span> <span class="o">=</span> <span class="n">dirpath</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span></div>
+
+
+<div class="viewcode-block" id="LoggingConfig.define_dump_dir">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.LoggingConfig.define_dump_dir">[docs]</a>
+    <span class="k">def</span> <span class="nf">define_dump_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the dump directory. If None, the modules will not be dumped.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirpath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dump_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirpath</span> <span class="o">/</span> <span class="s2">&quot;modules_dumps&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="VectorIndexConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.VectorIndexConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">VectorIndexConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the vector index.&quot;&quot;&quot;</span>
+
+    <span class="n">db_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the directory where the vector index database will be saved. If None, the database will not be saved&quot;&quot;&quot;</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Device to use for the vector index. Can be &#39;cpu&#39;, &#39;cuda&#39;, &#39;cuda:0&#39;, &#39;mps&#39;, etc.&quot;&quot;&quot;</span>
+    <span class="n">save_db</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to save the vector index database or not&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="AugmentationConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.AugmentationConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">AugmentationConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the augmentation.&quot;&quot;&quot;</span>
+
+    <span class="n">regex_sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of regex samples to generate&quot;&quot;&quot;</span>
+    <span class="n">multilabel_generation_config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Path to the multilabel generation configuration file. If None, the default configuration will be used&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="EmbedderConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.EmbedderConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">EmbedderConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration for the embedder.</span>
+
+<span class="sd">    The embedder is used to embed the data before training the model. These parameters</span>
+<span class="sd">    will be applied to the embedder used in the optimization process in vector db.</span>
+<span class="sd">    Only one model can be used globally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Batch size for the embedder&quot;&quot;&quot;</span>
+    <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Max length for the embedder. If None, the max length will be taken from model config&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="OptimizationConfig">
+<a class="viewcode-back" href="../../../autoapi/autointent/configs/index.html#autointent.configs.OptimizationConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">OptimizationConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the optimization process.&quot;&quot;&quot;</span>
+
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Seed for the random number generator&quot;&quot;&quot;</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">DataConfig</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">DataConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the data used in the optimization process&quot;&quot;&quot;</span>
+    <span class="n">task</span><span class="p">:</span> <span class="n">TaskConfig</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">TaskConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the task to optimize&quot;&quot;&quot;</span>
+    <span class="n">logs</span><span class="p">:</span> <span class="n">LoggingConfig</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">LoggingConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the logging&quot;&quot;&quot;</span>
+    <span class="n">vector_index</span><span class="p">:</span> <span class="n">VectorIndexConfig</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">VectorIndexConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the vector index&quot;&quot;&quot;</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="n">EmbedderConfig</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">EmbedderConfig</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the embedder&quot;&quot;&quot;</span>
+
+    <span class="n">defaults</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;_self_&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;override hydra/job_logging&quot;</span><span class="p">:</span> <span class="s2">&quot;autointent_standard_job_logger&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;override hydra/help&quot;</span><span class="p">:</span> <span class="s2">&quot;autointent_help&quot;</span><span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="n">logger_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;formatters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;simple&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2"> [</span><span class="si">%(levelname)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">}},</span>
+    <span class="s2">&quot;handlers&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;console&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;logging.StreamHandler&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;formatter&quot;</span><span class="p">:</span> <span class="s2">&quot;simple&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="s2">&quot;ext://sys.stdout&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;logging.FileHandler&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;formatter&quot;</span><span class="p">:</span> <span class="s2">&quot;simple&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{hydra.runtime.output_dir}</span><span class="s2">/$</span><span class="si">{hydra.job.name}</span><span class="s2">.log&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;root&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;WARN&quot;</span><span class="p">,</span> <span class="s2">&quot;handlers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;console&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">]},</span>
+    <span class="s2">&quot;disable_existing_loggers&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">help_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;app_name&quot;</span><span class="p">:</span> <span class="s2">&quot;AutoIntent&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="s2">&quot;== $</span><span class="si">{hydra.help.app_name}</span><span class="s2"> ==&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;footer&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Powered by Hydra (https://hydra.cc)</span>
+<span class="s2">Use --hydra-help to view Hydra specific help&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  $</span><span class="si">{hydra.help.header}</span>
+
+<span class="s2">  This is $</span><span class="si">{hydra.help.app_name}</span><span class="s2">!</span>
+<span class="s2">  == Config ==</span>
+<span class="s2">  This is the config generated for this run.</span>
+<span class="s2">  You can override everything, for example:</span>
+<span class="s2">  python my_app.py db.user=foo db.pass=bar</span>
+<span class="s2">  -------</span>
+<span class="s2">  $CONFIG</span>
+<span class="s2">  -------</span>
+
+<span class="s2">  $</span><span class="si">{hydra.help.footer}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ConfigStore</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;optimization_config&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">OptimizationConfig</span><span class="p">)</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;autointent_standard_job_logger&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/job_logging&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">logger_config</span><span class="p">)</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;autointent_help&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/help&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">help_config</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,70 @@
+autointent.pipeline.optimization
+================================
+
+.. py:module:: autointent.pipeline.optimization
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.pipeline.optimization.PipelineOptimizer
+
+
+Package Contents
+----------------
+
+.. py:class:: PipelineOptimizer(nodes)
+
+   Pipeline optimizer class.
+
+
+   .. py:attribute:: nodes
+
+
+   .. py:attribute:: logging_config
+
+
+   .. py:attribute:: vector_index_config
+
+
+   .. py:attribute:: embedder_config
+
+
+   .. py:method:: set_config(config)
+
+      Set configuration for the optimizer.
+
+      :param config: Configuration
+
+
+
+   .. py:method:: from_dict_config(config)
+      :classmethod:
+
+
+      Create pipeline optimizer from dictionary config.
+
+      :param config: Dictionary config
+
+
+
+   .. py:method:: optimize(context)
+
+      Optimize the pipeline.
+
+      :param context: Context
+
+
+
+   .. py:method:: optimize_from_dataset(dataset, force_multilabel = False)
+
+      Optimize the pipeline from dataset.
+
+      :param dataset: Dataset for optimization
+      :param force_multilabel: Whether to force multilabel or not
+      :return: Context
+
+
+

@@ -1,0 +1,135 @@
+autointent.custom_types
+=======================
+
+.. py:module:: autointent.custom_types
+
+.. autoapi-nested-parse::
+
+   Custom types for AutoIntent.
+
+   This module defines custom types, enumerations, and constants used throughout
+   the AutoIntent framework for improved type safety and clarity.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   autointent.custom_types.TASK_TYPES
+   autointent.custom_types.WEIGHT_TYPES
+   autointent.custom_types.LabelType
+   autointent.custom_types.NODE_TYPES
+   autointent.custom_types.NodeTypeType
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.custom_types.LogLevel
+   autointent.custom_types.BaseMetadataDict
+   autointent.custom_types.NodeType
+
+
+Module Contents
+---------------
+
+.. py:data:: TASK_TYPES
+
+   Represents the supported task types in AutoIntent:
+   - "multiclass": Single-label classification.
+   - "multilabel": Multi-label classification.
+   - "multiclass_as_multilabel": Multi-class treated as multi-label.
+
+
+.. py:class:: LogLevel
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Logging levels for the AutoIntent framework.
+
+
+   .. py:attribute:: DEBUG
+      :value: 'DEBUG'
+
+
+
+   .. py:attribute:: INFO
+      :value: 'INFO'
+
+
+
+   .. py:attribute:: WARNING
+      :value: 'WARNING'
+
+
+
+   .. py:attribute:: ERROR
+      :value: 'ERROR'
+
+
+
+   .. py:attribute:: CRITICAL
+      :value: 'CRITICAL'
+
+
+
+.. py:data:: WEIGHT_TYPES
+
+   Represents weight calculation methods:
+   - "uniform": Equal weight for all elements.
+   - "distance": Weights based on distance.
+   - "closest": Prioritizes closest elements.
+
+
+.. py:data:: LabelType
+
+   Type alias for label representation:
+   - `int`: For single-label classification.
+   - `list[int]`: For multi-label classification.
+
+
+.. py:class:: BaseMetadataDict
+
+   Bases: :py:obj:`TypedDict`
+
+
+   Base metadata dictionary for storing additional information.
+
+
+.. py:class:: NodeType
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Enumeration of node types in the AutoIntent pipeline.
+
+
+   .. py:attribute:: retrieval
+      :value: 'retrieval'
+
+
+
+   .. py:attribute:: prediction
+      :value: 'prediction'
+
+
+
+   .. py:attribute:: scoring
+      :value: 'scoring'
+
+
+
+   .. py:attribute:: regexp
+      :value: 'regexp'
+
+
+
+.. py:data:: NODE_TYPES
+
+.. py:data:: NodeTypeType
+

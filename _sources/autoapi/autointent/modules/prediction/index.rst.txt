@@ -1,0 +1,465 @@
+autointent.modules.prediction
+=============================
+
+.. py:module:: autointent.modules.prediction
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.modules.prediction.AdaptivePredictor
+   autointent.modules.prediction.ArgmaxPredictor
+   autointent.modules.prediction.PredictionModule
+   autointent.modules.prediction.JinoosPredictor
+   autointent.modules.prediction.ThresholdPredictor
+   autointent.modules.prediction.TunablePredictor
+
+
+Package Contents
+----------------
+
+.. py:class:: AdaptivePredictor(search_space = None)
+
+   Bases: :py:obj:`autointent.modules.prediction._base.PredictionModule`
+
+
+   Predictor for multi-label classification using adaptive thresholds.
+
+   The AdaptivePredictor calculates optimal thresholds based on the given
+   scores and labels, ensuring the best performance on multi-label data.
+
+   :ivar metadata_dict_name: Filename for saving metadata to disk.
+   :ivar n_classes: Number of classes in the dataset.
+   :ivar _r: Scaling factor for thresholds.
+   :ivar tags: List of Tag objects for mutually exclusive classes.
+   :ivar name: Name of the predictor, defaults to "adaptive".
+
+
+   .. py:attribute:: metadata_dict_name
+      :value: 'metadata.json'
+
+
+
+   .. py:attribute:: n_classes
+      :type:  int
+
+
+   .. py:attribute:: tags
+      :type:  list[autointent.context.data_handler.Tag] | None
+
+
+   .. py:attribute:: name
+      :value: 'adaptive'
+
+
+
+   .. py:attribute:: search_space
+
+
+   .. py:method:: from_context(context, search_space = None)
+      :classmethod:
+
+
+      Create an AdaptivePredictor instance using a Context object.
+
+      :param context: Context containing configurations and utilities.
+      :param search_space: List of threshold scaling factors, or None for default.
+      :return: Initialized AdaptivePredictor instance.
+
+
+
+   .. py:method:: fit(scores, labels, tags = None)
+
+      Fit the predictor by optimizing the threshold scaling factor.
+
+      :param scores: Array of shape (n_samples, n_classes) with predicted scores.
+      :param labels: List of true multi-label targets.
+      :param tags: List of Tag objects for mutually exclusive classes, or None.
+      :raises WrongClassificationError: If used on non-multi-label data.
+
+
+
+   .. py:method:: predict(scores)
+
+      Predict labels for the given scores.
+
+      :param scores: Array of shape (n_samples, n_classes) with predicted scores.
+      :return: Array of shape (n_samples, n_classes) with predicted binary labels.
+      :raises InvalidNumClassesError: If the number of classes does not match the trained predictor.
+
+
+
+   .. py:method:: dump(path)
+
+      Save the predictor's metadata to disk.
+
+      :param path: Path to the directory where metadata will be saved.
+
+
+
+   .. py:method:: load(path)
+
+      Load the predictor's metadata from disk.
+
+      :param path: Path to the directory containing saved metadata.
+
+
+
+.. py:class:: ArgmaxPredictor
+
+   Bases: :py:obj:`autointent.modules.prediction._base.PredictionModule`
+
+
+   Argmax prediction module.
+
+
+   .. py:attribute:: name
+      :value: 'argmax'
+
+
+
+   .. py:attribute:: n_classes
+      :type:  int
+
+
+   .. py:method:: from_context(context)
+      :classmethod:
+
+
+      Initialize form context.
+
+      :param context: Context
+
+
+
+   .. py:method:: fit(scores, labels, tags = None)
+
+      Argmax not fitting anything.
+
+      :param scores: Scores to fit
+      :param labels: Labels to fit
+      :param tags: Tags to fit
+      :raises WrongClassificationError: If the classification is wrong.
+
+
+
+   .. py:method:: predict(scores)
+
+      Predict the argmax.
+
+      :param scores: Scores to predict
+      :raises InvalidNumClassesError: If the number of classes is invalid.
+
+
+
+   .. py:method:: dump(path)
+
+      Dump.
+
+      :param path: Dump path.
+
+
+
+   .. py:method:: load(path)
+
+      Load.
+
+
+
+.. py:class:: PredictionModule
+
+   Bases: :py:obj:`autointent.modules.Module`, :py:obj:`abc.ABC`
+
+
+   Base class for prediction modules.
+
+
+   .. py:method:: fit(scores, labels, tags = None)
+      :abstractmethod:
+
+
+      Fit the model.
+
+      :param scores: Scores to fit
+      :param labels: Labels to fit
+      :param tags: Tags to fit
+
+
+
+   .. py:method:: predict(scores)
+      :abstractmethod:
+
+
+      Predict the best score.
+
+      :param scores: Scores to predict
+
+
+
+   .. py:method:: score(context, metric_fn)
+
+      Calculate metric on test set and return metric value.
+
+      :param context: Context to score
+      :param metric_fn: Metric function
+      :return: Score
+
+
+
+   .. py:method:: get_assets()
+
+      Return useful assets that represent intermediate data into context.
+
+
+
+   .. py:method:: clear_cache()
+
+      Clear cache.
+
+
+
+.. py:class:: JinoosPredictor(search_space = None)
+
+   Bases: :py:obj:`autointent.modules.prediction._base.PredictionModule`
+
+
+   Jinoos predictor module.
+
+
+   .. py:attribute:: thresh
+      :type:  float
+
+
+   .. py:attribute:: name
+      :value: 'jinoos'
+
+
+
+   .. py:attribute:: n_classes
+      :type:  int
+
+
+   .. py:attribute:: search_space
+
+
+   .. py:method:: from_context(context, search_space = None)
+      :classmethod:
+
+
+      Initialize from context.
+
+      :param context: Context
+      :param search_space: Search space
+
+
+
+   .. py:method:: fit(scores, labels, tags = None)
+
+      Fit the model.
+
+      :param scores: Scores to fit
+      :param labels: Labels to fit
+      :param tags: Tags to fit
+
+
+
+   .. py:method:: predict(scores)
+
+      Predict the best score.
+
+      :param scores: Scores to predict
+
+
+
+   .. py:method:: dump(path)
+
+      Dump all data needed for inference.
+
+      :param path: Path to dump
+
+
+
+   .. py:method:: load(path)
+
+      Load data from dump.
+
+      :param path: Path to load
+
+
+
+   .. py:method:: jinoos_score(y_true, y_pred)
+      :staticmethod:
+
+
+      Calculate Jinoos score.
+
+      .. math::
+
+          \\frac{C_{in}}{N_{in}}+\\frac{C_{oos}}{N_{oos}}
+
+      where $C_{in}$ is the number of correctly predicted in-domain labels
+       and $N_{in}$ is the total number of in-domain labels. The same for OOS samples
+
+      :param y_true: True labels
+      :param y_pred: Predicted labels
+
+
+
+.. py:class:: ThresholdPredictor(thresh)
+
+   Bases: :py:obj:`autointent.modules.prediction._base.PredictionModule`
+
+
+   Threshold predictor module.
+
+
+   .. py:attribute:: metadata
+      :type:  ThresholdPredictorDumpMetadata
+
+
+   .. py:attribute:: multilabel
+      :type:  bool
+
+
+   .. py:attribute:: n_classes
+      :type:  int
+
+
+   .. py:attribute:: tags
+      :type:  list[autointent.context.data_handler.Tag] | None
+
+
+   .. py:attribute:: name
+      :value: 'threshold'
+
+
+
+   .. py:attribute:: thresh
+
+
+   .. py:method:: from_context(context, thresh = 0.5)
+      :classmethod:
+
+
+      Initialize from context.
+
+      :param context: Context
+      :param thresh: Threshold
+
+
+
+   .. py:method:: fit(scores, labels, tags = None)
+
+      Fit the model.
+
+      :param scores: Scores to fit
+      :param labels: Labels to fit
+      :param tags: Tags to fit
+
+
+
+   .. py:method:: predict(scores)
+
+      Predict the best score.
+
+      :param scores: Scores to predict
+
+
+
+   .. py:method:: dump(path)
+
+      Dump the metadata.
+
+      :param path: Path to dump
+
+
+
+   .. py:method:: load(path)
+
+      Load the metadata.
+
+      :param path: Path to load
+
+
+
+.. py:class:: TunablePredictor(n_trials = 320, seed = 0, tags = None)
+
+   Bases: :py:obj:`autointent.modules.prediction._base.PredictionModule`
+
+
+   Tunable predictor module.
+
+
+   .. py:attribute:: name
+      :value: 'tunable'
+
+
+
+   .. py:attribute:: multilabel
+      :type:  bool
+
+
+   .. py:attribute:: n_classes
+      :type:  int
+
+
+   .. py:attribute:: tags
+      :type:  list[autointent.context.data_handler.Tag] | None
+
+
+   .. py:attribute:: n_trials
+
+
+   .. py:attribute:: seed
+
+
+   .. py:method:: from_context(context, n_trials = 320)
+      :classmethod:
+
+
+      Initialize from context.
+
+      :param context: Context
+      :param n_trials: Number of trials
+
+
+
+   .. py:method:: fit(scores, labels, tags = None)
+
+      Fit module.
+
+      When data doesn't contain out-of-scope utterances, using TunablePredictor imposes unnecessary
+       computational overhead.
+
+      :param scores: Scores to fit
+      :param labels: Labels to fit
+      :param tags: Tags to fit
+
+
+
+   .. py:method:: predict(scores)
+
+      Predict the best score.
+
+      :param scores: Scores to predict
+
+
+
+   .. py:method:: dump(path)
+
+      Dump all data needed for inference.
+
+      :param path: Path to dump
+
+
+
+   .. py:method:: load(path)
+
+      Load data from dump.
+
+      :param path: Path to load
+
+
+

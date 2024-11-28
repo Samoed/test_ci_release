@@ -1,0 +1,8 @@
+Scoring Modules
+===============
+
+Linear Scorer
+-------------
+
+.. nbgallery::
+   tutorials.modules.scoring.linear.py

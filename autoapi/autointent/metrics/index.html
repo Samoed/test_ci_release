@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>autointent.metrics &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="autointent.metrics.prediction" href="prediction/index.html" />
+    <link rel="prev" title="autointent.generation.prompts" href="../generation/prompts/index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-autointent.metrics">
+<span id="autointent-metrics"></span><h1>autointent.metrics<a class="headerlink" href="#module-autointent.metrics" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prediction/index.html">autointent.metrics.prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="regexp/index.html">autointent.metrics.regexp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/index.html">autointent.metrics.retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scoring/index.html">autointent.metrics.scoring</a></li>
+</ul>
+</div>
+</section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.METRIC_FN" title="autointent.metrics.METRIC_FN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">METRIC_FN</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.PredictionMetricFn" title="autointent.metrics.PredictionMetricFn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PredictionMetricFn</span></code></a></p></td>
+<td><p>Protocol for prediction metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.RegexpMetricFn" title="autointent.metrics.RegexpMetricFn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegexpMetricFn</span></code></a></p></td>
+<td><p>Protocol for regexp metrics.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.RetrievalMetricFn" title="autointent.metrics.RetrievalMetricFn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RetrievalMetricFn</span></code></a></p></td>
+<td><p>Protocol for retrieval metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.ScoringMetricFn" title="autointent.metrics.ScoringMetricFn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScoringMetricFn</span></code></a></p></td>
+<td><p>Protocol for scoring metrics.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.prediction_accuracy" title="autointent.metrics.prediction_accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prediction_accuracy</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate prediction accuracy. Supports both multiclass and multilabel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.prediction_f1" title="autointent.metrics.prediction_f1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prediction_f1</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate prediction f1 score. Supports both multiclass and multilabel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.prediction_precision" title="autointent.metrics.prediction_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prediction_precision</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate prediction precision. Supports both multiclass and multilabel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.prediction_recall" title="autointent.metrics.prediction_recall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prediction_recall</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate prediction recall. Supports both multiclass and multilabel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.prediction_roc_auc" title="autointent.metrics.prediction_roc_auc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prediction_roc_auc</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate ROC AUC for multiclass and multilabel classification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.regexp_partial_accuracy" title="autointent.metrics.regexp_partial_accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regexp_partial_accuracy</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate regexp partial accuracy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.regexp_partial_precision" title="autointent.metrics.regexp_partial_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regexp_partial_precision</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate regexp partial precision.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_hit_rate" title="autointent.metrics.retrieval_hit_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_hit_rate</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the hit rate at position k.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_hit_rate_intersecting" title="autointent.metrics.retrieval_hit_rate_intersecting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_hit_rate_intersecting</span></code></a>(query_labels, ...[, k])</p></td>
+<td><p>Calculate the hit rate at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_hit_rate_macro" title="autointent.metrics.retrieval_hit_rate_macro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_hit_rate_macro</span></code></a>(query_labels, candidates_labels)</p></td>
+<td><p>Calculate the hit rate at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_map" title="autointent.metrics.retrieval_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_map</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the mean average precision at position k.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_map_intersecting" title="autointent.metrics.retrieval_map_intersecting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_map_intersecting</span></code></a>(query_labels, candidates_labels)</p></td>
+<td><p>Calculate the mean average precision at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_map_macro" title="autointent.metrics.retrieval_map_macro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_map_macro</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the mean average precision at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_mrr" title="autointent.metrics.retrieval_mrr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_mrr</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the Mean Reciprocal Rank (MRR) at position k.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_mrr_intersecting" title="autointent.metrics.retrieval_mrr_intersecting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_mrr_intersecting</span></code></a>(query_labels, candidates_labels)</p></td>
+<td><p>Calculate the Mean Reciprocal Rank (MRR) at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_mrr_macro" title="autointent.metrics.retrieval_mrr_macro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_mrr_macro</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the Mean Reciprocal Rank (MRR) at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_ndcg" title="autointent.metrics.retrieval_ndcg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_ndcg</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the Normalized Discounted Cumulative Gain (NDCG) at position k.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_ndcg_intersecting" title="autointent.metrics.retrieval_ndcg_intersecting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_ndcg_intersecting</span></code></a>(query_labels, ...[, k])</p></td>
+<td><p>Calculate the Normalized Discounted Cumulative Gain (NDCG) at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_ndcg_macro" title="autointent.metrics.retrieval_ndcg_macro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_ndcg_macro</span></code></a>(query_labels, candidates_labels)</p></td>
+<td><p>Calculate the Normalized Discounted Cumulative Gain (NDCG) at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_precision" title="autointent.metrics.retrieval_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_precision</span></code></a>(query_labels, candidates_labels[, k])</p></td>
+<td><p>Calculate the precision at position k.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_precision_intersecting" title="autointent.metrics.retrieval_precision_intersecting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_precision_intersecting</span></code></a>(query_labels, ...[, k])</p></td>
+<td><p>Calculate the precision at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.retrieval_precision_macro" title="autointent.metrics.retrieval_precision_macro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieval_precision_macro</span></code></a>(query_labels, candidates_labels)</p></td>
+<td><p>Calculate the precision at position k for the intersecting labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.scoring_accuracy" title="autointent.metrics.scoring_accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_accuracy</span></code></a>(labels, scores)</p></td>
+<td><p>Calculate accuracy for multiclass and multilabel classification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.scoring_f1" title="autointent.metrics.scoring_f1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_f1</span></code></a>(labels, scores)</p></td>
+<td><p>Calculate the F1 score for multiclass and multilabel classification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.scoring_hit_rate" title="autointent.metrics.scoring_hit_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_hit_rate</span></code></a>(labels, scores)</p></td>
+<td><p>Calculate the hit rate for multilabel classification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.scoring_log_likelihood" title="autointent.metrics.scoring_log_likelihood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_log_likelihood</span></code></a>(labels, scores[, eps])</p></td>
+<td><p>Supports multiclass and multilabel cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.scoring_map" title="autointent.metrics.scoring_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_map</span></code></a>(labels, scores)</p></td>
+<td><p>Calculate the mean average precision (MAP) score for multilabel classification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.scoring_neg_coverage" title="autointent.metrics.scoring_neg_coverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_neg_coverage</span></code></a>(labels, scores)</p></td>
+<td><p>Supports multilabel classification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.scoring_neg_ranking_loss" title="autointent.metrics.scoring_neg_ranking_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_neg_ranking_loss</span></code></a>(labels, scores)</p></td>
+<td><p>supports multilabel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.scoring_precision" title="autointent.metrics.scoring_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_precision</span></code></a>(labels, scores)</p></td>
+<td><p>Calculate precision for multiclass and multilabel classification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.scoring_recall" title="autointent.metrics.scoring_recall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_recall</span></code></a>(labels, scores)</p></td>
+<td><p>Calculate recall for multiclass and multilabel classification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.scoring_roc_auc" title="autointent.metrics.scoring_roc_auc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scoring_roc_auc</span></code></a>(labels, scores)</p></td>
+<td><p>Supports multiclass and multilabel cases.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.metrics.PredictionMetricFn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">PredictionMetricFn</span></span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#PredictionMetricFn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.PredictionMetricFn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Protocol for prediction metrics.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.metrics.PredictionMetricFn.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#PredictionMetricFn.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.PredictionMetricFn.__call__" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate prediction metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels
+- multiclass case: list representing an array shape <cite>(n_samples,)</cite> of integer class labels
+- multilabel case: list representing a matrix of shape <cite>(n_samples, n_classes)</cite> with binary values</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels. Same shape as <cite>y_true</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the prediction metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.prediction_accuracy">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">prediction_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#prediction_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.prediction_accuracy" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate prediction accuracy. Supports both multiclass and multilabel.</p>
+<p>The prediction accuracy is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Accuracy} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{true},i} = y_{\text{pred},i})}{N}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples,
+- <span class="math notranslate nohighlight">\(y_{\text{true},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(y_{\text{pred},i}\)</span> is the predicted label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the prediction accuracy</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.prediction_f1">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">prediction_f1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#prediction_f1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.prediction_f1" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate prediction f1 score. Supports both multiclass and multilabel.</p>
+<p>This function internally uses <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.f1_score()</span></code> with <cite>average=macro</cite>. Refer to the
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html">scikit-learn documentation</a>
+for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the prediction accuracy</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.prediction_precision">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">prediction_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#prediction_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.prediction_precision" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate prediction precision. Supports both multiclass and multilabel.</p>
+<p>This function internally uses <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.precision_score()</span></code> with <cite>average=macro</cite>. Refer to the
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html">scikit-learn documentation</a>
+for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the prediction precision</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.prediction_recall">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">prediction_recall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#prediction_recall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.prediction_recall" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate prediction recall. Supports both multiclass and multilabel.</p>
+<p>This function internally uses <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.recall_score()</span></code> with <cite>average=macro</cite>. Refer to the
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html">scikit-learn documentation</a>
+for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the prediction recall</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.prediction_roc_auc">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">prediction_roc_auc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/prediction.html#prediction_roc_auc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.prediction_roc_auc" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate ROC AUC for multiclass and multilabel classification.</p>
+<p>The ROC AUC measures the ability of a model to distinguish between classes.
+It is calculated as the area under the curve of the true positive rate (TPR)
+against the false positive rate (FPR) at various threshold settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the prediction ROC AUC</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.metrics.RegexpMetricFn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">RegexpMetricFn</span></span><a class="reference internal" href="../../../_modules/autointent/metrics/regexp.html#RegexpMetricFn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.RegexpMetricFn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Protocol for regexp metrics.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.metrics.RegexpMetricFn.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/regexp.html#RegexpMetricFn.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.RegexpMetricFn.__call__" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate regexp metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the regexp metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.regexp_partial_accuracy">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">regexp_partial_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/regexp.html#regexp_partial_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.regexp_partial_accuracy" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate regexp partial accuracy.</p>
+<p>The regexp partial accuracy is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Partial Accuracy} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{true},i} \in y_{\text{pred},i})}{N}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples,
+- <span class="math notranslate nohighlight">\(y_{\text{true},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(y_{\text{pred},i}\)</span> is the predicted label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the regexp metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.regexp_partial_precision">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">regexp_partial_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/regexp.html#regexp_partial_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.regexp_partial_precision" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate regexp partial precision.</p>
+<p>The regexp partial precision is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Partial Precision} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{true},i}
+\in y_{\text{pred},i})}{\sum_{i=1}^N \mathbb{1}(|y_{\text{pred},i}| &gt; 0)}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples,
+- <span class="math notranslate nohighlight">\(y_{\text{true},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(y_{\text{pred},i}\)</span> is the predicted label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(|y_{\text{pred},i}|\)</span> is the number of predicted labels for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the regexp metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.metrics.RetrievalMetricFn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">RetrievalMetricFn</span></span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#RetrievalMetricFn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.RetrievalMetricFn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Protocol for retrieval metrics.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.metrics.RetrievalMetricFn.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#RetrievalMetricFn.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.RetrievalMetricFn.__call__" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate retrieval metric.</p>
+<ul class="simple">
+<li><p>multiclass case: labels are integer</p></li>
+<li><p>multilabel case: labels are binary</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_hit_rate">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_hit_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_hit_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_hit_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the hit rate at position k.</p>
+<p>The hit rate is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Hit Rate} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{query},i} \in y_{\text{candidates},i}^{(1:k)})}{N}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of queries,
+- <span class="math notranslate nohighlight">\(y_{\text{query},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(y_{\text{candidates},i}^{(1:k)}\)</span> is the set of top-k predicted labels for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model (from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_hit_rate_intersecting">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_hit_rate_intersecting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_hit_rate_intersecting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_hit_rate_intersecting" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the hit rate at position k for the intersecting labels.</p>
+<p>The intersecting hit rate is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Hit Rate}_{\text{intersecting}} = \frac{\sum_{i=1}^N \mathbb{1} \left( \sum_{j=1}^k
+\left( y_{\text{query},i} \cdot y_{\text{candidates},i,j} \right) &gt; 0 \right)}{N}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of queries,
+- <span class="math notranslate nohighlight">\(y_{\text{query},i}\)</span> is the one-hot encoded label vector for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(y_{\text{candidates},i,j}\)</span> is the one-hot encoded label vector of the <span class="math notranslate nohighlight">\(j\)</span>-th
+candidate for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(k\)</span> is the number of top candidates considered,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_hit_rate_macro">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_hit_rate_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_hit_rate_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_hit_rate_macro" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the hit rate at position k for the intersecting labels.</p>
+<p>This function internally uses <a class="reference internal" href="#autointent.metrics.retrieval_hit_rate" title="autointent.metrics.retrieval_hit_rate"><code class="xref py py-func docutils literal notranslate"><span class="pre">retrieval_hit_rate()</span></code></a> to calculate the hit rate at position <span class="math notranslate nohighlight">\(k\)</span>
+for each query and applies <code class="xref py py-func docutils literal notranslate"><span class="pre">macrofy()</span></code> to perform macro-averaging across multiple queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_map">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_map" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the mean average precision at position k.</p>
+<p>The Mean Average Precision (MAP) is computed as the average of the average precision
+(AP) scores for all queries. The average precision for a single query is calculated using
+the <code class="xref py py-func docutils literal notranslate"><span class="pre">average_precision()</span></code> function, which computes the precision at each rank
+position considering the top-k retrieved items.</p>
+<p>MAP is given by:</p>
+<div class="math notranslate nohighlight">
+\[\text{MAP} = \frac{1}{Q} \sum_{q=1}^{Q} \text{AP}(q, c, k)\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(Q\)</span> is the total number of queries,
+- <span class="math notranslate nohighlight">\(\text{AP}(q, c, k)\)</span> is the average precision for the <span class="math notranslate nohighlight">\(q\)</span>-th query,
+calculated considering the true labels for that query <span class="math notranslate nohighlight">\(q\)</span>, the ranked candidate
+labels <span class="math notranslate nohighlight">\(c\)</span>, and the number <cite>k</cite> which determines the number of top items to consider.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_map_intersecting">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_map_intersecting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_map_intersecting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_map_intersecting" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the mean average precision at position k for the intersecting labels.</p>
+<p>The Mean Average Precision (MAP) for intersecting labels is computed as
+the average of the average precision (AP) scores for all queries. The average
+precision for a single query is calculated using the <code class="xref py py-func docutils literal notranslate"><span class="pre">average_precision_intersecting()</span></code>
+function, which considers the intersecting true and predicted labels for the
+top-k retrieved items.</p>
+<p>MAP is given by:</p>
+<div class="math notranslate nohighlight">
+\[\text{MAP} = \frac{1}{Q} \sum_{q=1}^{Q} \text{AP}_{\text{intersecting}}(q, c, k)\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(Q\)</span> is the total number of queries,
+- <span class="math notranslate nohighlight">\(\text{AP}_{\text{intersecting}}(q, c, k)\)</span> is the average precision for the
+<span class="math notranslate nohighlight">\(q\)</span>-th query, calculated using the intersecting true labels (<cite>q</cite>),
+predicted labels (<cite>c</cite>), and the number of top items (<cite>k</cite>) to consider.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_map_macro">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_map_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_map_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_map_macro" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the mean average precision at position k for the intersecting labels.</p>
+<p>This function internally uses <a class="reference internal" href="#autointent.metrics.retrieval_map" title="autointent.metrics.retrieval_map"><code class="xref py py-func docutils literal notranslate"><span class="pre">retrieval_map()</span></code></a> to calculate the MAP for each query and then
+applies <code class="xref py py-func docutils literal notranslate"><span class="pre">macrofy()</span></code> to perform macro-averaging across multiple queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_mrr">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_mrr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_mrr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_mrr" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mean Reciprocal Rank (MRR) at position k.</p>
+<p>MRR is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{MRR&#64;k} = \frac{1}{N} \sum_{i=1}^N \frac{1}{\text{rank}_i}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(\text{rank}_i\)</span> is the rank position of the first relevant item in the top-k results for query <span class="math notranslate nohighlight">\(i\)</span>,
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model (from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_mrr_intersecting">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_mrr_intersecting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_mrr_intersecting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_mrr_intersecting" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mean Reciprocal Rank (MRR) at position k for the intersecting labels.</p>
+<p>MRR is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{MRR&#64;k}_{\text{intersecting}} = \frac{1}{N} \sum_{i=1}^N \frac{1}{\text{rank}_i}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(\text{rank}_i\)</span> is the rank position of the first relevant (intersecting) item in the top-k
+results for query <span class="math notranslate nohighlight">\(i\)</span>,
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of queries.</p>
+<p>Intersecting relevance is determined by checking whether the query label intersects with the candidate labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model (from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_mrr_macro">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_mrr_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_mrr_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_mrr_macro" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mean Reciprocal Rank (MRR) at position k for the intersecting labels.</p>
+<p>This function calculates MRR using <a class="reference internal" href="#autointent.metrics.retrieval_mrr" title="autointent.metrics.retrieval_mrr"><code class="xref py py-func docutils literal notranslate"><span class="pre">retrieval_mrr()</span></code></a> and applies it to each
+query using <code class="xref py py-func docutils literal notranslate"><span class="pre">macrofy()</span></code> to compute the macro-averaged score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model (from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_ndcg">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_ndcg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_ndcg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_ndcg" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Normalized Discounted Cumulative Gain (NDCG) at position k.</p>
+<p>NDCG at position <span class="math notranslate nohighlight">\(k\)</span> is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{NDCG&#64;k} = \frac{\text{DCG&#64;k}}{\text{IDCG&#64;k}}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(\text{DCG&#64;k}\)</span> is the Discounted Cumulative Gain at position <span class="math notranslate nohighlight">\(k\)</span>,
+- <span class="math notranslate nohighlight">\(\text{IDCG&#64;k}\)</span> is the Ideal Discounted Cumulative Gain at position <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>The NDCG value is normalized such that it is between 0 and 1, where 1 indicates the ideal ranking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_ndcg_intersecting">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_ndcg_intersecting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_ndcg_intersecting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_ndcg_intersecting" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Normalized Discounted Cumulative Gain (NDCG) at position k for the intersecting labels.</p>
+<p>NDCG at position <span class="math notranslate nohighlight">\(k\)</span> for intersecting labels is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{NDCG&#64;k}_{\text{intersecting}} = \frac{\text{DCG&#64;k}_{\text{intersecting}}}
+{\text{IDCG&#64;k}_{\text{intersecting}}}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{DCG&#64;k}_{\text{intersecting}}\)</span> is the Discounted Cumulative Gain for the intersecting labels at position <span class="math notranslate nohighlight">\(k\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{IDCG&#64;k}_{\text{intersecting}}\)</span> is the Ideal Discounted Cumulative Gain for the intersecting labels at position <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+</ul>
+<p>Intersecting relevance is determined by checking whether the query labels overlap with
+the candidate labels.
+NDCG values are normalized between 0 and 1, where 1 indicates the ideal ranking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model (from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_ndcg_macro">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_ndcg_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_ndcg_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_ndcg_macro" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Normalized Discounted Cumulative Gain (NDCG) at position k for the intersecting labels.</p>
+<p>This function calculates NDCG using <a class="reference internal" href="#autointent.metrics.retrieval_ndcg" title="autointent.metrics.retrieval_ndcg"><code class="xref py py-func docutils literal notranslate"><span class="pre">retrieval_ndcg()</span></code></a> and applies it to each
+query using <code class="xref py py-func docutils literal notranslate"><span class="pre">macrofy()</span></code> to compute the macro-averaged score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model (from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_precision">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_precision" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the precision at position k.</p>
+<p>Precision at position <span class="math notranslate nohighlight">\(k\)</span> is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Precision&#64;k} = \frac{1}{N} \sum_{i=1}^N \frac{|y_{\text{query},i} \cap
+y_{\text{candidates},i}^{(1:k)}|}{k}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of queries,
+- <span class="math notranslate nohighlight">\(y_{\text{query},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(y_{\text{candidates},i}^{(1:k)}\)</span> is the set of top-k predicted labels for the <span class="math notranslate nohighlight">\(i\)</span>-th query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_precision_intersecting">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_precision_intersecting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_precision_intersecting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_precision_intersecting" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the precision at position k for the intersecting labels.</p>
+<p>Precision at position <span class="math notranslate nohighlight">\(k\)</span> for intersecting labels is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Precision&#64;k}_{\text{intersecting}} = \frac{1}{N} \sum_{i=1}^N
+\frac{\sum_{j=1}^k \mathbb{1} \left( y_{\text{query},i} \cdot y_{\text{candidates},i,j} &gt; 0 \right)}{k}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of queries,
+- <span class="math notranslate nohighlight">\(y_{\text{query},i}\)</span> is the one-hot encoded label vector for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(y_{\text{candidates},i,j}\)</span> is the one-hot encoded label vector of the <span class="math notranslate nohighlight">\(j\)</span>-th
+candidate for the <span class="math notranslate nohighlight">\(i\)</span>-th query,
+- <span class="math notranslate nohighlight">\(k\)</span> is the number of top candidates considered,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the
+condition is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.retrieval_precision_macro">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">retrieval_precision_macro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">candidates_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/retrieval.html#retrieval_precision_macro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.retrieval_precision_macro" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the precision at position k for the intersecting labels.</p>
+<p>This function internally uses <a class="reference internal" href="#autointent.metrics.retrieval_precision" title="autointent.metrics.retrieval_precision"><code class="xref py py-func docutils literal notranslate"><span class="pre">retrieval_precision()</span></code></a> to calculate the precision at position <span class="math notranslate nohighlight">\(k\)</span>
+for each query and applies <code class="xref py py-func docutils literal notranslate"><span class="pre">macrofy()</span></code> to perform macro-averaging across multiple queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – For each query, this list contains its class labels</p></li>
+<li><p><strong>candidates_labels</strong> (<em>autointent.metrics._custom_types.CANDIDATE_TYPE</em>) – For each query, these lists contain class labels of items ranked by a retrieval model
+(from most to least relevant)</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> | </em><em>None</em>) – Number of top items to consider for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the retrieval metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.metrics.ScoringMetricFn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">ScoringMetricFn</span></span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#ScoringMetricFn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.ScoringMetricFn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Protocol for scoring metrics.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.metrics.ScoringMetricFn.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#ScoringMetricFn.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.ScoringMetricFn.__call__" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate scoring metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – ground truth labels for each utterance
+- multiclass case: list representing an array of shape <cite>(n_samples,)</cite> with integer values
+- multilabel case: list representing a matrix of shape <cite>(n_samples, n_classes)</cite> with integer values</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – for each utterance, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the scoring metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_accuracy">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_accuracy" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate accuracy for multiclass and multilabel classification.</p>
+<p>This function computes accuracy by using <a class="reference internal" href="#autointent.metrics.prediction_accuracy" title="autointent.metrics.prediction_accuracy"><code class="xref py py-func docutils literal notranslate"><span class="pre">prediction_accuracy()</span></code></a> to evaluate predictions and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_prediction_metric()</span></code> to handle the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – ground truth labels for each utterance</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – for each utterance, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the scoring metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_f1">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_f1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_f1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_f1" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the F1 score for multiclass and multilabel classification.</p>
+<p>This function computes the F1 score by using <a class="reference internal" href="#autointent.metrics.prediction_f1" title="autointent.metrics.prediction_f1"><code class="xref py py-func docutils literal notranslate"><span class="pre">prediction_f1()</span></code></a> to evaluate predictions and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_prediction_metric()</span></code> to handle the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Ground truth labels for each sample</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – For each sample, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>F1 score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_hit_rate">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_hit_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_hit_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_hit_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the hit rate for multilabel classification.</p>
+<p>The hit rate measures the fraction of cases where the top-ranked label is in the set
+of true labels for the instance.</p>
+<div class="math notranslate nohighlight">
+\[\text{Hit Rate} = \frac{1}{N} \sum_{i=1}^N \mathbb{1}(y_{\text{top},i} \in y_{\text{true},i})\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of instances,
+- <span class="math notranslate nohighlight">\(y_{\text{top},i}\)</span> is the top-ranked predicted label for instance <span class="math notranslate nohighlight">\(i\)</span>,
+- <span class="math notranslate nohighlight">\(y_{\text{true},i}\)</span> is the set of ground truth labels for instance <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Ground truth labels for each sample</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – For each sample, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hit rate score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_log_likelihood">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_log_likelihood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_log_likelihood"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_log_likelihood" title="Link to this definition">¶</a></dt>
+<dd><p>Supports multiclass and multilabel cases.</p>
+<p>Multiclass case:
+Mean negative cross-entropy for each utterance classification result:</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{\ell}\sum_{i=1}^{\ell}\log(s[y[i]])\]</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">s[y[i]]</span></code> is the predicted score of the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th utterance having the ground truth label.</p>
+<p>Multilabel case:
+Mean negative binary cross-entropy:</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{\ell}\sum_{i=1}^\ell\sum_{c=1}^C\Big[y[i,c]\cdot\log(s[i,c])+(1-y[i,c])\cdot\log(1-s[i,c])\Big]\]</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">s[i,c]</span></code> is the predicted score of the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th utterance having the ground truth label <code class="docutils literal notranslate"><span class="pre">c</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Ground truth labels for each utterance.</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – For each utterance, a list containing scores for each of <cite>n_classes</cite> classes.</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – A small value to avoid division by zero.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the scoring metric.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_map">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_map" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the mean average precision (MAP) score for multilabel classification.</p>
+<p>The MAP score measures the precision at different levels of ranking,
+averaged across all queries. The ideal value is 1, indicating perfect ranking, while the worst value is 0.</p>
+<p>This function utilizes <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.label_ranking_average_precision_score()</span></code> for computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – ground truth labels for each sample</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – for each sample, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mean average precision score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_neg_coverage">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_neg_coverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_neg_coverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_neg_coverage" title="Link to this definition">¶</a></dt>
+<dd><p>Supports multilabel classification.</p>
+<p>Evaluates how far we need, on average, to go down the list of labels in order to cover
+all the proper labels of the instance.</p>
+<ul class="simple">
+<li><p>The ideal value is 1</p></li>
+<li><p>The worst value is 0</p></li>
+</ul>
+<p>The result is equivalent to executing the following code:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_rank_metric</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">... </span>    <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">n_classes</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">rankdata</span>
+<span class="gp">... </span>    <span class="n">int_ranks</span> <span class="o">=</span> <span class="n">rankdata</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">filtered_ranks</span> <span class="o">=</span> <span class="n">int_ranks</span> <span class="o">*</span> <span class="n">labels</span>
+<span class="gp">... </span>    <span class="n">max_ranks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">filtered_ranks</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">float_ranks</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_ranks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_classes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">float_ranks</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">compute_rank_metric</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – ground truth labels for each utterance</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – for each utterance, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the scoring metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_neg_ranking_loss">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_neg_ranking_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_neg_ranking_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_neg_ranking_loss" title="Link to this definition">¶</a></dt>
+<dd><p>supports multilabel.</p>
+<p>Compute the average number of label pairs that are incorrectly ordered given y_score
+weighted by the size of the label set and the number of labels not in the label set.</p>
+<p>the ideal value is 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – ground truth labels for each utterance</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – for each utterance, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the scoring metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_precision">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_precision" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate precision for multiclass and multilabel classification.</p>
+<p>This function computes precision by using <a class="reference internal" href="#autointent.metrics.prediction_precision" title="autointent.metrics.prediction_precision"><code class="xref py py-func docutils literal notranslate"><span class="pre">prediction_precision()</span></code></a> to evaluate predictions and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_prediction_metric()</span></code> to handle the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Ground truth labels for each sample</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – For each sample, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Precision score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_recall">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_recall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_recall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_recall" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate recall for multiclass and multilabel classification.</p>
+<p>This function computes recall by using <a class="reference internal" href="#autointent.metrics.prediction_recall" title="autointent.metrics.prediction_recall"><code class="xref py py-func docutils literal notranslate"><span class="pre">prediction_recall()</span></code></a> to evaluate predictions and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_prediction_metric()</span></code> to handle the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Ground truth labels for each sample</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – For each sample, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Recall score</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.scoring_roc_auc">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">scoring_roc_auc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/autointent/metrics/scoring.html#scoring_roc_auc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.scoring_roc_auc" title="Link to this definition">¶</a></dt>
+<dd><p>Supports multiclass and multilabel cases.</p>
+<p>Macro averaged roc-auc for utterance classification task, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{C}\sum_{k=1}^C ROCAUC(scores[:, k], labels[:, k])\]</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">C</span></code> is the number of classes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – ground truth labels for each utterance</p></li>
+<li><p><strong>scores</strong> (<em>autointent.metrics._custom_types.SCORES_VALUE_TYPE</em>) – for each utterance, this list contains scores for each of <cite>n_classes</cite> classes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the scoring metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="autointent.metrics.METRIC_FN">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.</span></span><span class="sig-name descname"><span class="pre">METRIC_FN</span></span><a class="headerlink" href="#autointent.metrics.METRIC_FN" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">autointent</a><ul>
+      <li>Previous: <a href="../generation/prompts/index.html" title="previous chapter">autointent.generation.prompts</a></li>
+      <li>Next: <a href="prediction/index.html" title="next chapter">autointent.metrics.prediction</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../_sources/autoapi/autointent/metrics/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

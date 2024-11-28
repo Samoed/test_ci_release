@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>autointent.pipeline.optimization &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="autointent.pipeline.inference" href="../inference/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-autointent.pipeline.optimization">
+<span id="autointent-pipeline-optimization"></span><h1>autointent.pipeline.optimization<a class="headerlink" href="#module-autointent.pipeline.optimization" title="Link to this heading">¶</a></h1>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.pipeline.optimization.PipelineOptimizer" title="autointent.pipeline.optimization.PipelineOptimizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PipelineOptimizer</span></code></a></p></td>
+<td><p>Pipeline optimizer class.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.pipeline.optimization.</span></span><span class="sig-name descname"><span class="pre">PipelineOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/pipeline/optimization/_pipeline_optimizer.html#PipelineOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer" title="Link to this definition">¶</a></dt>
+<dd><p>Pipeline optimizer class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em><em>[</em><a class="reference internal" href="../../nodes/index.html#autointent.nodes.NodeOptimizer" title="autointent.nodes.NodeOptimizer"><em>autointent.nodes.NodeOptimizer</em></a><em>]</em>)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.nodes">
+<span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.nodes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.logging_config">
+<span class="sig-name descname"><span class="pre">logging_config</span></span><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.logging_config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.vector_index_config">
+<span class="sig-name descname"><span class="pre">vector_index_config</span></span><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.vector_index_config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.embedder_config">
+<span class="sig-name descname"><span class="pre">embedder_config</span></span><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.embedder_config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.set_config">
+<span class="sig-name descname"><span class="pre">set_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/pipeline/optimization/_pipeline_optimizer.html#PipelineOptimizer.set_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.set_config" title="Link to this definition">¶</a></dt>
+<dd><p>Set configuration for the optimizer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>autointent.configs._optimization_cli.LoggingConfig</em><em> | </em><em>autointent.configs._optimization_cli.VectorIndexConfig</em><em> | </em><em>autointent.configs._optimization_cli.EmbedderConfig</em>) – Configuration</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.from_dict_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/pipeline/optimization/_pipeline_optimizer.html#PipelineOptimizer.from_dict_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.from_dict_config" title="Link to this definition">¶</a></dt>
+<dd><p>Create pipeline optimizer from dictionary config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary config</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>typing_extensions.Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.optimize">
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/pipeline/optimization/_pipeline_optimizer.html#PipelineOptimizer.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.optimize" title="Link to this definition">¶</a></dt>
+<dd><p>Optimize the pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="../../index.html#autointent.Context" title="autointent.Context"><em>autointent.Context</em></a>) – Context</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.pipeline.optimization.PipelineOptimizer.optimize_from_dataset">
+<span class="sig-name descname"><span class="pre">optimize_from_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_multilabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/pipeline/optimization/_pipeline_optimizer.html#PipelineOptimizer.optimize_from_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.pipeline.optimization.PipelineOptimizer.optimize_from_dataset" title="Link to this definition">¶</a></dt>
+<dd><p>Optimize the pipeline from dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="../../context/data_handler/index.html#autointent.context.data_handler.Dataset" title="autointent.context.data_handler.Dataset"><em>autointent.context.data_handler.Dataset</em></a>) – Dataset for optimization</p></li>
+<li><p><strong>force_multilabel</strong> (<em>bool</em>) – Whether to force multilabel or not</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Context</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../index.html#autointent.Context" title="autointent.Context">autointent.Context</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">autointent</a><ul>
+  <li><a href="../index.html">autointent.pipeline</a><ul>
+      <li>Previous: <a href="../inference/index.html" title="previous chapter">autointent.pipeline.inference</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/autointent/pipeline/optimization/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

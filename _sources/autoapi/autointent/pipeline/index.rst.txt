@@ -1,0 +1,147 @@
+autointent.pipeline
+===================
+
+.. py:module:: autointent.pipeline
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/autointent/pipeline/inference/index
+   /autoapi/autointent/pipeline/optimization/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.pipeline.InferencePipeline
+   autointent.pipeline.PipelineOptimizer
+
+
+Package Contents
+----------------
+
+.. py:class:: InferencePipeline(nodes)
+
+   Pipeline for inference.
+
+
+   .. py:attribute:: nodes
+
+
+   .. py:method:: from_dict_config(nodes_configs)
+      :classmethod:
+
+
+      Create pipeline from dictionary config.
+
+      :param nodes_configs: list of dictionary config for nodes
+      :return: InferencePipeline
+
+
+
+   .. py:method:: from_config(nodes_configs)
+      :classmethod:
+
+
+      Create pipeline from config.
+
+      :param nodes_configs: list of config for nodes
+
+
+
+   .. py:method:: predict(utterances)
+
+      Predict the labels for the utterances.
+
+      :param utterances: list of utterances
+      :return: list of predicted labels
+
+
+
+   .. py:method:: predict_with_metadata(utterances)
+
+      Predict the labels for the utterances with metadata.
+
+      :param utterances: list of utterances
+      :return: prediction output
+
+
+
+   .. py:method:: fit(utterances, labels)
+
+      Pipeline for inference not support fit.
+
+      :param utterances: utterances
+      :param labels: labels
+
+
+
+   .. py:method:: from_context(context)
+      :classmethod:
+
+
+      Create pipeline from context.
+
+      :param context: context
+
+
+
+.. py:class:: PipelineOptimizer(nodes)
+
+   Pipeline optimizer class.
+
+
+   .. py:attribute:: nodes
+
+
+   .. py:attribute:: logging_config
+
+
+   .. py:attribute:: vector_index_config
+
+
+   .. py:attribute:: embedder_config
+
+
+   .. py:method:: set_config(config)
+
+      Set configuration for the optimizer.
+
+      :param config: Configuration
+
+
+
+   .. py:method:: from_dict_config(config)
+      :classmethod:
+
+
+      Create pipeline optimizer from dictionary config.
+
+      :param config: Dictionary config
+
+
+
+   .. py:method:: optimize(context)
+
+      Optimize the pipeline.
+
+      :param context: Context
+
+
+
+   .. py:method:: optimize_from_dataset(dataset, force_multilabel = False)
+
+      Optimize the pipeline from dataset.
+
+      :param dataset: Dataset for optimization
+      :param force_multilabel: Whether to force multilabel or not
+      :return: Context
+
+
+

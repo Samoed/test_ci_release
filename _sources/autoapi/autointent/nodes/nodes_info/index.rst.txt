@@ -1,0 +1,170 @@
+autointent.nodes.nodes_info
+===========================
+
+.. py:module:: autointent.nodes.nodes_info
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   autointent.nodes.nodes_info.NODES_INFO
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.nodes.nodes_info.NodeInfo
+   autointent.nodes.nodes_info.PredictionNodeInfo
+   autointent.nodes.nodes_info.RegExpNodeInfo
+   autointent.nodes.nodes_info.RetrievalNodeInfo
+   autointent.nodes.nodes_info.ScoringNodeInfo
+
+
+Package Contents
+----------------
+
+.. py:class:: NodeInfo
+
+   Base node info class.
+
+
+   .. py:attribute:: metrics_available
+      :type:  ClassVar[collections.abc.Mapping[str, autointent.metrics.METRIC_FN]]
+
+      Available metrics for the node.
+
+
+
+   .. py:attribute:: modules_available
+      :type:  ClassVar[collections.abc.Mapping[str, type[autointent.modules.Module]]]
+
+      Available modules for the node.
+
+
+
+   .. py:attribute:: node_type
+      :type:  autointent.custom_types.NodeType
+
+      Node type.
+
+
+
+.. py:class:: PredictionNodeInfo
+
+   Bases: :py:obj:`autointent.nodes.nodes_info._base.NodeInfo`
+
+
+   Prediction node info.
+
+
+   .. py:attribute:: metrics_available
+      :type:  ClassVar[collections.abc.Mapping[str, autointent.metrics.PredictionMetricFn]]
+
+      Available metrics for the node.
+
+
+
+   .. py:attribute:: modules_available
+      :type:  ClassVar[dict[str, type[autointent.modules.Module]]]
+
+      Available modules for the node.
+
+
+
+   .. py:attribute:: node_type
+
+      Node type.
+
+
+
+.. py:class:: RegExpNodeInfo
+
+   Bases: :py:obj:`autointent.nodes.nodes_info._base.NodeInfo`
+
+
+   Regexp node info.
+
+
+   .. py:attribute:: metrics_available
+      :type:  ClassVar[collections.abc.Mapping[str, autointent.metrics.regexp.RegexpMetricFn]]
+
+      Available metrics for the node.
+
+
+
+   .. py:attribute:: modules_available
+      :type:  ClassVar[collections.abc.Mapping[str, type[autointent.modules.Module]]]
+
+      Available modules for the node.
+
+
+
+   .. py:attribute:: node_type
+
+      Node type.
+
+
+
+.. py:class:: RetrievalNodeInfo
+
+   Bases: :py:obj:`autointent.nodes.nodes_info._base.NodeInfo`
+
+
+   Retrieval node info.
+
+
+   .. py:attribute:: metrics_available
+      :type:  ClassVar[collections.abc.Mapping[str, autointent.metrics.RetrievalMetricFn]]
+
+      Available metrics for the node.
+
+
+
+   .. py:attribute:: modules_available
+      :type:  ClassVar[collections.abc.Mapping[str, type[autointent.modules.Module]]]
+
+      Available modules for the node.
+
+
+
+   .. py:attribute:: node_type
+
+      Node type.
+
+
+
+.. py:class:: ScoringNodeInfo
+
+   Bases: :py:obj:`autointent.nodes.nodes_info._base.NodeInfo`
+
+
+   Scoring node info.
+
+
+   .. py:attribute:: metrics_available
+      :type:  ClassVar[collections.abc.Mapping[str, autointent.metrics.ScoringMetricFn]]
+
+      Available metrics for the node.
+
+
+
+   .. py:attribute:: modules_available
+      :type:  ClassVar[collections.abc.Mapping[str, type[autointent.modules.ScoringModule]]]
+
+      Available modules for the node.
+
+
+
+   .. py:attribute:: node_type
+
+      Node type.
+
+
+
+.. py:data:: NODES_INFO
+   :type:  dict[str, _base.NodeInfo]
+

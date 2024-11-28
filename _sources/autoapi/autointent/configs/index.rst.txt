@@ -1,0 +1,409 @@
+autointent.configs
+==================
+
+.. py:module:: autointent.configs
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.configs.InferenceConfig
+   autointent.configs.InferencePipelineConfig
+   autointent.configs.InferenceNodeConfig
+   autointent.configs.NodeOptimizerConfig
+   autointent.configs.AugmentationConfig
+   autointent.configs.DataConfig
+   autointent.configs.EmbedderConfig
+   autointent.configs.LoggingConfig
+   autointent.configs.OptimizationConfig
+   autointent.configs.TaskConfig
+   autointent.configs.VectorIndexConfig
+   autointent.configs.PipelineOptimizerConfig
+
+
+Package Contents
+----------------
+
+.. py:class:: InferenceConfig
+
+   Configuration for the inference process.
+
+
+   .. py:attribute:: data_path
+      :type:  str
+
+      Path to the file containing the data for prediction
+
+
+
+   .. py:attribute:: source_dir
+      :type:  str
+
+      Path to the directory containing the inference config
+
+
+
+   .. py:attribute:: output_path
+      :type:  str
+
+      Path to the file where the predictions will be saved
+
+
+
+   .. py:attribute:: log_level
+      :type:  autointent.custom_types.LogLevel
+
+      Logging level
+
+
+
+   .. py:attribute:: with_metadata
+      :type:  bool
+      :value: False
+
+
+      Whether to save metadata along with the predictions
+
+
+
+.. py:class:: InferencePipelineConfig
+
+   Configuration for the inference pipeline.
+
+
+   .. py:attribute:: nodes
+      :type:  list[autointent.configs._node.InferenceNodeConfig]
+
+      List of nodes in the inference pipeline
+
+
+
+.. py:class:: InferenceNodeConfig
+
+   Configuration for the inference node.
+
+
+   .. py:attribute:: node_type
+      :type:  autointent.custom_types.NodeTypeType
+
+      Type of the node. Should be one of the NODE_TYPES
+
+
+
+   .. py:attribute:: module_type
+      :type:  str
+
+      Type of the module. Should be one of the Module
+
+
+
+   .. py:attribute:: module_config
+      :type:  dict[str, Any]
+
+      Configuration of the module
+
+
+
+   .. py:attribute:: load_path
+      :type:  str | None
+      :value: None
+
+
+      Path to the module dump. If None, the module will be trained from scratch
+
+
+
+.. py:class:: NodeOptimizerConfig
+
+   Configuration for the node optimizer.
+
+
+   .. py:attribute:: node_type
+      :type:  autointent.custom_types.NodeType
+
+      Type of the node. Should be one of the NODE_TYPES
+
+
+
+   .. py:attribute:: search_space
+      :type:  list[dict[str, Any]]
+
+      Search space for the optimization
+
+
+
+   .. py:attribute:: metric
+      :type:  str
+
+      Metric to optimize
+
+
+
+.. py:class:: AugmentationConfig
+
+   Configuration for the augmentation.
+
+
+   .. py:attribute:: regex_sampling
+      :type:  int
+      :value: 0
+
+
+      Number of regex samples to generate
+
+
+
+   .. py:attribute:: multilabel_generation_config
+      :type:  str | None
+      :value: None
+
+
+      Path to the multilabel generation configuration file. If None, the default configuration will be used
+
+
+
+.. py:class:: DataConfig
+
+   Configuration for the data used in the optimization process.
+
+
+   .. py:attribute:: train_path
+      :type:  str | pathlib.Path
+
+      Path to the training data
+
+
+
+   .. py:attribute:: test_path
+      :type:  pathlib.Path | None
+      :value: None
+
+
+      Path to the testing data. If None, no testing data will be used
+
+
+
+   .. py:attribute:: force_multilabel
+      :type:  bool
+      :value: False
+
+
+      Force multilabel classification even if the data is multiclass
+
+
+
+.. py:class:: EmbedderConfig
+
+   Configuration for the embedder.
+
+   The embedder is used to embed the data before training the model. These parameters
+   will be applied to the embedder used in the optimization process in vector db.
+   Only one model can be used globally.
+
+
+   .. py:attribute:: batch_size
+      :type:  int
+      :value: 32
+
+
+      Batch size for the embedder
+
+
+
+   .. py:attribute:: max_length
+      :type:  int | None
+      :value: None
+
+
+      Max length for the embedder. If None, the max length will be taken from model config
+
+
+
+.. py:class:: LoggingConfig
+
+   Configuration for the logging.
+
+
+   .. py:attribute:: run_name
+      :type:  str | None
+      :value: None
+
+
+      Name of the run. If None, a random name will be generated
+
+
+
+   .. py:attribute:: dirpath
+      :type:  pathlib.Path | None
+      :value: None
+
+
+      Path to the directory where the logs will be saved.
+      If None, the logs will be saved in the current working directory
+
+
+
+   .. py:attribute:: dump_dir
+      :type:  pathlib.Path | None
+      :value: None
+
+
+      Path to the directory where the modules will be dumped. If None, the modules will not be dumped
+
+
+
+   .. py:attribute:: dump_modules
+      :type:  bool
+      :value: False
+
+
+      Whether to dump the modules or not
+
+
+
+   .. py:attribute:: clear_ram
+      :type:  bool
+      :value: True
+
+
+      Whether to clear the RAM after dumping the modules
+
+
+
+   .. py:method:: __post_init__()
+
+      Define the run name, directory path and dump directory.
+
+
+
+   .. py:method:: define_run_name()
+
+      Define the run name. If None, a random name will be generated.
+
+
+
+   .. py:method:: define_dirpath()
+
+      Define the directory path. If None, the logs will be saved in the current working directory.
+
+
+
+   .. py:method:: define_dump_dir()
+
+      Define the dump directory. If None, the modules will not be dumped.
+
+
+
+.. py:class:: OptimizationConfig
+
+   Configuration for the optimization process.
+
+
+   .. py:attribute:: seed
+      :type:  int
+      :value: 0
+
+
+      Seed for the random number generator
+
+
+
+   .. py:attribute:: data
+      :type:  DataConfig
+
+      Configuration for the data used in the optimization process
+
+
+
+   .. py:attribute:: task
+      :type:  TaskConfig
+
+      Configuration for the task to optimize
+
+
+
+   .. py:attribute:: logs
+      :type:  LoggingConfig
+
+      Configuration for the logging
+
+
+
+   .. py:attribute:: vector_index
+      :type:  VectorIndexConfig
+
+      Configuration for the vector index
+
+
+
+   .. py:attribute:: embedder
+      :type:  EmbedderConfig
+
+      Configuration for the embedder
+
+
+
+   .. py:attribute:: defaults
+      :type:  list[Any]
+
+
+.. py:class:: TaskConfig
+
+   Configuration for the task to optimize.
+
+
+   .. py:attribute:: search_space_path
+      :type:  pathlib.Path | None
+      :value: None
+
+
+      Path to the search space configuration file. If None, the default search space will be used
+
+
+
+.. py:class:: VectorIndexConfig
+
+   Configuration for the vector index.
+
+
+   .. py:attribute:: db_dir
+      :type:  pathlib.Path | None
+      :value: None
+
+
+      Path to the directory where the vector index database will be saved. If None, the database will not be saved
+
+
+
+   .. py:attribute:: device
+      :type:  str
+      :value: 'cpu'
+
+
+      Device to use for the vector index. Can be 'cpu', 'cuda', 'cuda:0', 'mps', etc.
+
+
+
+   .. py:attribute:: save_db
+      :type:  bool
+      :value: False
+
+
+      Whether to save the vector index database or not
+
+
+
+.. py:class:: PipelineOptimizerConfig
+
+   Configuration for the pipeline optimizer.
+
+
+   .. py:attribute:: nodes
+      :type:  list[autointent.configs._node.NodeOptimizerConfig]
+
+      List of the nodes to optimize
+
+
+

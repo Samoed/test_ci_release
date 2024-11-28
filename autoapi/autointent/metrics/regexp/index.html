@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>autointent.metrics.regexp &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="autointent.metrics.retrieval" href="../retrieval/index.html" />
+    <link rel="prev" title="autointent.metrics.prediction" href="../prediction/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-autointent.metrics.regexp">
+<span id="autointent-metrics-regexp"></span><h1>autointent.metrics.regexp<a class="headerlink" href="#module-autointent.metrics.regexp" title="Link to this heading">¶</a></h1>
+<p>Regexp metrics for intent recognition.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.regexp.RegexpMetricFn" title="autointent.metrics.regexp.RegexpMetricFn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegexpMetricFn</span></code></a></p></td>
+<td><p>Protocol for regexp metrics.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.metrics.regexp.regexp_partial_accuracy" title="autointent.metrics.regexp.regexp_partial_accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regexp_partial_accuracy</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate regexp partial accuracy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.metrics.regexp.regexp_partial_precision" title="autointent.metrics.regexp.regexp_partial_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regexp_partial_precision</span></code></a>(y_true, y_pred)</p></td>
+<td><p>Calculate regexp partial precision.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.metrics.regexp.RegexpMetricFn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.metrics.regexp.</span></span><span class="sig-name descname"><span class="pre">RegexpMetricFn</span></span><a class="reference internal" href="../../../../_modules/autointent/metrics/regexp.html#RegexpMetricFn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.regexp.RegexpMetricFn" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Protocol for regexp metrics.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="autointent.metrics.regexp.RegexpMetricFn.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/metrics/regexp.html#RegexpMetricFn.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.regexp.RegexpMetricFn.__call__" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate regexp metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the regexp metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.regexp.regexp_partial_accuracy">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.regexp.</span></span><span class="sig-name descname"><span class="pre">regexp_partial_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/metrics/regexp.html#regexp_partial_accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.regexp.regexp_partial_accuracy" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate regexp partial accuracy.</p>
+<p>The regexp partial accuracy is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Partial Accuracy} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{true},i} \in y_{\text{pred},i})}{N}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples,
+- <span class="math notranslate nohighlight">\(y_{\text{true},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(y_{\text{pred},i}\)</span> is the predicted label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the regexp metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="autointent.metrics.regexp.regexp_partial_precision">
+<span class="sig-prename descclassname"><span class="pre">autointent.metrics.regexp.</span></span><span class="sig-name descname"><span class="pre">regexp_partial_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/autointent/metrics/regexp.html#regexp_partial_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.metrics.regexp.regexp_partial_precision" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate regexp partial precision.</p>
+<p>The regexp partial precision is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Partial Precision} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{true},i}
+\in y_{\text{pred},i})}{\sum_{i=1}^N \mathbb{1}(|y_{\text{pred},i}| &gt; 0)}\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(N\)</span> is the total number of samples,
+- <span class="math notranslate nohighlight">\(y_{\text{true},i}\)</span> is the true label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(y_{\text{pred},i}\)</span> is the predicted label for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(|y_{\text{pred},i}|\)</span> is the number of predicted labels for the <span class="math notranslate nohighlight">\(i\)</span>-th sample,
+- <span class="math notranslate nohighlight">\(\mathbb{1}(\text{condition})\)</span> is the indicator function that equals 1 if the condition
+is true and 0 otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – True values of labels</p></li>
+<li><p><strong>y_pred</strong> (<em>autointent.metrics._custom_types.LABELS_VALUE_TYPE</em>) – Predicted values of labels</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score of the regexp metric</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">autointent</a><ul>
+  <li><a href="../index.html">autointent.metrics</a><ul>
+      <li>Previous: <a href="../prediction/index.html" title="previous chapter">autointent.metrics.prediction</a></li>
+      <li>Next: <a href="../retrieval/index.html" title="next chapter">autointent.metrics.retrieval</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/autointent/metrics/regexp/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

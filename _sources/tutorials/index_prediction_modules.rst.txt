@@ -1,0 +1,8 @@
+Prediction Modules
+==================
+
+Argmax Predictor
+----------------
+
+.. nbgallery::
+   tutorials.modules.prediction.argmax.py

@@ -1,0 +1,138 @@
+autointent.metrics.prediction
+=============================
+
+.. py:module:: autointent.metrics.prediction
+
+.. autoapi-nested-parse::
+
+   Prediction metrics for multiclass and multilabel classification tasks.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   autointent.metrics.prediction.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.metrics.prediction.PredictionMetricFn
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   autointent.metrics.prediction.prediction_accuracy
+   autointent.metrics.prediction.prediction_roc_auc
+   autointent.metrics.prediction.prediction_precision
+   autointent.metrics.prediction.prediction_recall
+   autointent.metrics.prediction.prediction_f1
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: PredictionMetricFn
+
+   Bases: :py:obj:`Protocol`
+
+
+   Protocol for prediction metrics.
+
+
+   .. py:method:: __call__(y_true, y_pred)
+
+      Calculate prediction metric.
+
+      :param y_true: True values of labels
+          - multiclass case: list representing an array shape `(n_samples,)` of integer class labels
+          - multilabel case: list representing a matrix of shape `(n_samples, n_classes)` with binary values
+      :param y_pred: Predicted values of labels. Same shape as `y_true`
+      :return: Score of the prediction metric
+
+
+
+.. py:function:: prediction_accuracy(y_true, y_pred)
+
+   Calculate prediction accuracy. Supports both multiclass and multilabel.
+
+   The prediction accuracy is calculated as:
+
+   .. math::
+
+       \text{Accuracy} = \frac{\sum_{i=1}^N \mathbb{1}(y_{\text{true},i} = y_{\text{pred},i})}{N}
+
+   where:
+   - :math:`N` is the total number of samples,
+   - :math:`y_{\text{true},i}` is the true label for the :math:`i`-th sample,
+   - :math:`y_{\text{pred},i}` is the predicted label for the :math:`i`-th sample,
+   - :math:`\mathbb{1}(\text{condition})` is the indicator function that equals 1 if the condition
+   is true and 0 otherwise.
+
+   :param y_true: True values of labels
+   :param y_pred: Predicted values of labels
+   :return: Score of the prediction accuracy
+
+
+.. py:function:: prediction_roc_auc(y_true, y_pred)
+
+   Calculate ROC AUC for multiclass and multilabel classification.
+
+   The ROC AUC measures the ability of a model to distinguish between classes.
+   It is calculated as the area under the curve of the true positive rate (TPR)
+   against the false positive rate (FPR) at various threshold settings.
+
+   :param y_true: True values of labels
+   :param y_pred: Predicted values of labels
+   :return: Score of the prediction ROC AUC
+
+
+.. py:function:: prediction_precision(y_true, y_pred)
+
+   Calculate prediction precision. Supports both multiclass and multilabel.
+
+   This function internally uses :func:`sklearn.metrics.precision_score` with `average=macro`. Refer to the
+   `scikit-learn documentation <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html>`__
+   for more details.
+
+   :param y_true: True values of labels
+   :param y_pred: Predicted values of labels
+   :return: Score of the prediction precision
+
+
+.. py:function:: prediction_recall(y_true, y_pred)
+
+   Calculate prediction recall. Supports both multiclass and multilabel.
+
+   This function internally uses :func:`sklearn.metrics.recall_score` with `average=macro`. Refer to the
+   `scikit-learn documentation <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html>`__
+   for more details.
+
+   :param y_true: True values of labels
+   :param y_pred: Predicted values of labels
+   :return: Score of the prediction recall
+
+
+.. py:function:: prediction_f1(y_true, y_pred)
+
+   Calculate prediction f1 score. Supports both multiclass and multilabel.
+
+   This function internally uses :func:`sklearn.metrics.f1_score` with `average=macro`. Refer to the
+   `scikit-learn documentation <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html>`__
+   for more details.
+
+   :param y_true: True values of labels
+   :param y_pred: Predicted values of labels
+   :return: Score of the prediction accuracy
+
+

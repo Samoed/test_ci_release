@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Working with data &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pipeline Optimization" href="index_pipeline_optimization.html" />
+    <link rel="prev" title="Data" href="index_data.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="Working-with-data">
+<h1>Working with data<a class="headerlink" href="#Working-with-data" title="Link to this heading">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import importlib.resources as ires
+
+import datasets
+
+from autointent.context.data_handler import Dataset
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>datasets.logging.disable_progress_bar() # disable tqdm outputs
+</pre></div>
+</div>
+</div>
+<section id="Creating-a-dataset">
+<h2>Creating a dataset<a class="headerlink" href="#Creating-a-dataset" title="Link to this heading">¶</a></h2>
+<p>To create a dataset, you need to provide a training split containing samples with utterances and labels, as shown below:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;train&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;utterance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a multilabel dataset, the <code class="docutils literal notranslate"><span class="pre">label</span></code> field should be a list of integers representing the corresponding class labels.</p>
+<section id="Handling-out-of-scope-(OOS)-samples">
+<h3>Handling out-of-scope (OOS) samples<a class="headerlink" href="#Handling-out-of-scope-(OOS)-samples" title="Link to this heading">¶</a></h3>
+<p>To indicate that a sample is out-of-scope (OOS), omit the <code class="docutils literal notranslate"><span class="pre">label</span></code> field from the sample dictionary. For example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;train&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;utterance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OOS request&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="Validation-and-test-splits">
+<h3>Validation and test splits<a class="headerlink" href="#Validation-and-test-splits" title="Link to this heading">¶</a></h3>
+<p>By default, a portion of the training split will be allocated for validation and testing. However, you can also specify a test split explicitly:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;train&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;utterance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;test&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;utterance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hi!&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="Adding-metadata-to-intents">
+<h3>Adding metadata to intents<a class="headerlink" href="#Adding-metadata-to-intents" title="Link to this heading">¶</a></h3>
+<p>You can add metadata to intents in your dataset, such as regular expressions, intent names, descriptions, or tags, using the <code class="docutils literal notranslate"><span class="pre">intents</span></code> field:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;train&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;utterance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;intents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;greeting&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;conversation_start&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;regexp_partial_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;\bhello\b&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;regexp_full_match&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;^hello$&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User wants to initiate a conversation with a greeting.&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: A human-readable representation of the intent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tags</span></code>: Used in multilabel scenarios to predict the most probable class listed in a specific tag.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regexp_partial_match</span></code> and <code class="docutils literal notranslate"><span class="pre">regexp_full_match</span></code>: Used by the <code class="docutils literal notranslate"><span class="pre">RegExp</span></code> module to predict intents based on provided patterns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: Used by the <code class="docutils literal notranslate"><span class="pre">DescriptionScorer</span></code> to calculate scores based on the similarity between an utterance and intent descriptions.</p></li>
+</ul>
+<p>All fields in the <code class="docutils literal notranslate"><span class="pre">intents</span></code> list are optional except for <code class="docutils literal notranslate"><span class="pre">id</span></code>.</p>
+</section>
+</section>
+<section id="Loading-a-dataset">
+<h2>Loading a dataset<a class="headerlink" href="#Loading-a-dataset" title="Link to this heading">¶</a></h2>
+<p>There are three main ways to load your dataset:</p>
+<ol class="arabic simple">
+<li><p>From a Python dictionary.</p></li>
+<li><p>From a JSON file.</p></li>
+<li><p>Directly from the Hugging Face Hub.</p></li>
+</ol>
+<section id="Creating-a-dataset-from-a-Python-dictionary">
+<h3>Creating a dataset from a Python dictionary<a class="headerlink" href="#Creating-a-dataset-from-a-Python-dictionary" title="Link to this heading">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset = Dataset.from_dict(
+    {
+        &quot;train&quot;: [
+            {
+                &quot;utterance&quot;: &quot;Please help me with my card. It won&#39;t activate.&quot;,
+                &quot;label&quot;: 0,
+            },
+            {
+                &quot;utterance&quot;: &quot;I tried but am unable to activate my card.&quot;,
+                &quot;label&quot;: 0,
+            },
+            {
+                &quot;utterance&quot;: &quot;I want to open an account for my children.&quot;,
+                &quot;label&quot;: 1,
+            },
+            {
+                &quot;utterance&quot;: &quot;How old do you need to be to use the bank&#39;s services?&quot;,
+                &quot;label&quot;: 1,
+            },
+        ],
+        &quot;test&quot;: [
+            {
+                &quot;utterance&quot;: &quot;I want to start using my card.&quot;,
+                &quot;label&quot;: 0,
+            },
+            {
+                &quot;utterance&quot;: &quot;How old do I need to be?&quot;,
+                &quot;label&quot;: 1,
+            },
+        ],
+        &quot;intents&quot;: [
+            {
+                &quot;id&quot;: 0,
+                &quot;name&quot;: &quot;activate_my_card&quot;,
+            },
+            {
+                &quot;id&quot;: 1,
+                &quot;name&quot;: &quot;age_limit&quot;,
+            },
+        ],
+    },
+)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Loading-a-dataset-from-a-file">
+<h3>Loading a dataset from a file<a class="headerlink" href="#Loading-a-dataset-from-a-file" title="Link to this heading">¶</a></h3>
+<p>The AutoIntent library includes sample datasets. For example, you can load the <code class="docutils literal notranslate"><span class="pre">autointent/datafiles/dstc3-20shot.json</span></code> file like this:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset = Dataset.from_json(
+    ires.files(&quot;autointent.datafiles&quot;).joinpath(&quot;dstc3-20shot.json&quot;),
+)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Loading-a-dataset-from-the-Hugging-Face-Hub">
+<h3>Loading a dataset from the Hugging Face Hub<a class="headerlink" href="#Loading-a-dataset-from-the-Hugging-Face-Hub" title="Link to this heading">¶</a></h3>
+<p>If your dataset on the Hugging Face Hub matches the required format, you can load it directly using its repository ID:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span># dataset = Dataset.from_datasets(&quot;&lt;repo_id&gt;&quot;)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Accessing-dataset-splits">
+<h3>Accessing dataset splits<a class="headerlink" href="#Accessing-dataset-splits" title="Link to this heading">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset = Dataset.from_json(
+    ires.files(&quot;autointent.datafiles&quot;).joinpath(&quot;banking77.json&quot;),
+)
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> class organizes your data as a dictionary of splits (<code class="docutils literal notranslate"><span class="pre">str:</span> <span class="pre">datasets.Dataset</span></code>). For example, after initialization, an <code class="docutils literal notranslate"><span class="pre">oos</span></code> key may be added if OOS samples are provided. In the case of the <code class="docutils literal notranslate"><span class="pre">banking77</span></code> dataset, only the <code class="docutils literal notranslate"><span class="pre">train</span></code> split is available, which you can access as shown below:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset[&quot;train&quot;]
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Working-with-dataset-splits">
+<h3>Working with dataset splits<a class="headerlink" href="#Working-with-dataset-splits" title="Link to this heading">¶</a></h3>
+<p>Each split in the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> class is an instance of <a class="reference external" href="https://huggingface.co/docs/datasets/en/package_reference/main_classes#datasets.Dataset">datasets.Dataset</a>, so you can work with them accordingly.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset[&quot;train&quot;][:5]  # get first 5 train samples
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Working-with-intents">
+<h3>Working with intents<a class="headerlink" href="#Working-with-intents" title="Link to this heading">¶</a></h3>
+<p>Metadata that you added to intents in your dataset is stored in <code class="docutils literal notranslate"><span class="pre">intents:</span> <span class="pre">list[Intent]</span></code> attribute.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset.intents[0] # get intent (id=0)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Pushing-a-dataset-to-the-Hugging-Face-Hub">
+<h3>Pushing a dataset to the Hugging Face Hub<a class="headerlink" href="#Pushing-a-dataset-to-the-Hugging-Face-Hub" title="Link to this heading">¶</a></h3>
+<p>To share your dataset on the Hugging Face Hub, use the <code class="docutils literal notranslate"><span class="pre">push_to_hub</span></code> method. Ensure that you are logged in using the <code class="docutils literal notranslate"><span class="pre">huggingface-cli</span></code> tool:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span># dataset.push_to_hub(&quot;&lt;repo_id&gt;&quot;)
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorials.html">Tutorials</a><ul>
+  <li><a href="index_data.html">Data</a><ul>
+      <li>Previous: <a href="index_data.html" title="previous chapter">Data</a></li>
+      <li>Next: <a href="index_pipeline_optimization.html" title="next chapter">Pipeline Optimization</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/tutorials/tutorials.data.py.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

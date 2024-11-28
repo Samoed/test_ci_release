@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>autointent.nodes.nodes_info &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="autointent.nodes.optimization" href="../optimization/index.html" />
+    <link rel="prev" title="autointent.nodes.inference" href="../inference/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-autointent.nodes.nodes_info">
+<span id="autointent-nodes-nodes-info"></span><h1>autointent.nodes.nodes_info<a class="headerlink" href="#module-autointent.nodes.nodes_info" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.nodes.nodes_info.NODES_INFO" title="autointent.nodes.nodes_info.NODES_INFO"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NODES_INFO</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.nodes.nodes_info.NodeInfo" title="autointent.nodes.nodes_info.NodeInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NodeInfo</span></code></a></p></td>
+<td><p>Base node info class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.nodes.nodes_info.PredictionNodeInfo" title="autointent.nodes.nodes_info.PredictionNodeInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PredictionNodeInfo</span></code></a></p></td>
+<td><p>Prediction node info.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.nodes.nodes_info.RegExpNodeInfo" title="autointent.nodes.nodes_info.RegExpNodeInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegExpNodeInfo</span></code></a></p></td>
+<td><p>Regexp node info.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#autointent.nodes.nodes_info.RetrievalNodeInfo" title="autointent.nodes.nodes_info.RetrievalNodeInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RetrievalNodeInfo</span></code></a></p></td>
+<td><p>Retrieval node info.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#autointent.nodes.nodes_info.ScoringNodeInfo" title="autointent.nodes.nodes_info.ScoringNodeInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScoringNodeInfo</span></code></a></p></td>
+<td><p>Scoring node info.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.NodeInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.nodes.nodes_info.</span></span><span class="sig-name descname"><span class="pre">NodeInfo</span></span><a class="reference internal" href="../../../../_modules/autointent/nodes/nodes_info/_base.html#NodeInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.nodes.nodes_info.NodeInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Base node info class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.NodeInfo.metrics_available">
+<span class="sig-name descname"><span class="pre">metrics_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">autointent.metrics.METRIC_FN</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.NodeInfo.metrics_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available metrics for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.NodeInfo.modules_available">
+<span class="sig-name descname"><span class="pre">modules_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../modules/index.html#autointent.modules.Module" title="autointent.modules.Module"><span class="pre">autointent.modules.Module</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.NodeInfo.modules_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available modules for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.NodeInfo.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../custom_types/index.html#autointent.custom_types.NodeType" title="autointent.custom_types.NodeType"><span class="pre">autointent.custom_types.NodeType</span></a></em><a class="headerlink" href="#autointent.nodes.nodes_info.NodeInfo.node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Node type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.PredictionNodeInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.nodes.nodes_info.</span></span><span class="sig-name descname"><span class="pre">PredictionNodeInfo</span></span><a class="reference internal" href="../../../../_modules/autointent/nodes/nodes_info/_prediction.html#PredictionNodeInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.nodes.nodes_info.PredictionNodeInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">autointent.nodes.nodes_info._base.NodeInfo</span></code></p>
+<p>Prediction node info.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.PredictionNodeInfo.metrics_available">
+<span class="sig-name descname"><span class="pre">metrics_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../metrics/index.html#autointent.metrics.PredictionMetricFn" title="autointent.metrics.PredictionMetricFn"><span class="pre">autointent.metrics.PredictionMetricFn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.PredictionNodeInfo.metrics_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available metrics for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.PredictionNodeInfo.modules_available">
+<span class="sig-name descname"><span class="pre">modules_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../modules/index.html#autointent.modules.Module" title="autointent.modules.Module"><span class="pre">autointent.modules.Module</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.PredictionNodeInfo.modules_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available modules for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.PredictionNodeInfo.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><a class="headerlink" href="#autointent.nodes.nodes_info.PredictionNodeInfo.node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Node type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RegExpNodeInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.nodes.nodes_info.</span></span><span class="sig-name descname"><span class="pre">RegExpNodeInfo</span></span><a class="reference internal" href="../../../../_modules/autointent/nodes/nodes_info/_regexp.html#RegExpNodeInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.nodes.nodes_info.RegExpNodeInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">autointent.nodes.nodes_info._base.NodeInfo</span></code></p>
+<p>Regexp node info.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RegExpNodeInfo.metrics_available">
+<span class="sig-name descname"><span class="pre">metrics_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../metrics/regexp/index.html#autointent.metrics.regexp.RegexpMetricFn" title="autointent.metrics.regexp.RegexpMetricFn"><span class="pre">autointent.metrics.regexp.RegexpMetricFn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.RegExpNodeInfo.metrics_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available metrics for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RegExpNodeInfo.modules_available">
+<span class="sig-name descname"><span class="pre">modules_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../modules/index.html#autointent.modules.Module" title="autointent.modules.Module"><span class="pre">autointent.modules.Module</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.RegExpNodeInfo.modules_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available modules for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RegExpNodeInfo.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><a class="headerlink" href="#autointent.nodes.nodes_info.RegExpNodeInfo.node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Node type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RetrievalNodeInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.nodes.nodes_info.</span></span><span class="sig-name descname"><span class="pre">RetrievalNodeInfo</span></span><a class="reference internal" href="../../../../_modules/autointent/nodes/nodes_info/_retrieval.html#RetrievalNodeInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.nodes.nodes_info.RetrievalNodeInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">autointent.nodes.nodes_info._base.NodeInfo</span></code></p>
+<p>Retrieval node info.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RetrievalNodeInfo.metrics_available">
+<span class="sig-name descname"><span class="pre">metrics_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../metrics/index.html#autointent.metrics.RetrievalMetricFn" title="autointent.metrics.RetrievalMetricFn"><span class="pre">autointent.metrics.RetrievalMetricFn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.RetrievalNodeInfo.metrics_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available metrics for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RetrievalNodeInfo.modules_available">
+<span class="sig-name descname"><span class="pre">modules_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../modules/index.html#autointent.modules.Module" title="autointent.modules.Module"><span class="pre">autointent.modules.Module</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.RetrievalNodeInfo.modules_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available modules for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.RetrievalNodeInfo.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><a class="headerlink" href="#autointent.nodes.nodes_info.RetrievalNodeInfo.node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Node type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.ScoringNodeInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">autointent.nodes.nodes_info.</span></span><span class="sig-name descname"><span class="pre">ScoringNodeInfo</span></span><a class="reference internal" href="../../../../_modules/autointent/nodes/nodes_info/_scoring.html#ScoringNodeInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#autointent.nodes.nodes_info.ScoringNodeInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">autointent.nodes.nodes_info._base.NodeInfo</span></code></p>
+<p>Scoring node info.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.ScoringNodeInfo.metrics_available">
+<span class="sig-name descname"><span class="pre">metrics_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../metrics/index.html#autointent.metrics.ScoringMetricFn" title="autointent.metrics.ScoringMetricFn"><span class="pre">autointent.metrics.ScoringMetricFn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.ScoringNodeInfo.metrics_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available metrics for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.ScoringNodeInfo.modules_available">
+<span class="sig-name descname"><span class="pre">modules_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../modules/index.html#autointent.modules.ScoringModule" title="autointent.modules.ScoringModule"><span class="pre">autointent.modules.ScoringModule</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.ScoringNodeInfo.modules_available" title="Link to this definition">¶</a></dt>
+<dd><p>Available modules for the node.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.ScoringNodeInfo.node_type">
+<span class="sig-name descname"><span class="pre">node_type</span></span><a class="headerlink" href="#autointent.nodes.nodes_info.ScoringNodeInfo.node_type" title="Link to this definition">¶</a></dt>
+<dd><p>Node type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="autointent.nodes.nodes_info.NODES_INFO">
+<span class="sig-prename descclassname"><span class="pre">autointent.nodes.nodes_info.</span></span><span class="sig-name descname"><span class="pre">NODES_INFO</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_base.NodeInfo</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#autointent.nodes.nodes_info.NODES_INFO" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">autointent</a><ul>
+  <li><a href="../index.html">autointent.nodes</a><ul>
+      <li>Previous: <a href="../inference/index.html" title="previous chapter">autointent.nodes.inference</a></li>
+      <li>Next: <a href="../optimization/index.html" title="next chapter">autointent.nodes.optimization</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/autointent/nodes/nodes_info/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

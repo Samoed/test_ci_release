@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Linear Scoring &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Guides" href="../guides/index.html" />
+    <link rel="prev" title="Scoring Modules" href="index_scoring_modules.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="Linear-Scoring">
+<h1>Linear Scoring<a class="headerlink" href="#Linear-Scoring" title="Link to this heading">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import importlib.resources as ires
+
+from autointent.context._utils import load_data
+from autointent.context.data_handler import DataHandler
+from autointent.modules import LinearScorer
+</pre></div>
+</div>
+</div>
+<p>Load your dataset in our format:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dataset_path = ires.files(&quot;tests.assets.data&quot;).joinpath(&quot;clinc_subset.json&quot;)
+dataset = load_data(dataset_path)
+</pre></div>
+</div>
+</div>
+<p>Split your data into train and dev sets.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><br/><span></span>data_handler = DataHandler(dataset)
+</pre></div>
+</div>
+</div>
+<p>Initialize scoring module. It will take text and output probabilities for each class.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>scorer = LinearScorer(embedder_name=&quot;sergeyzh/rubert-tiny-turbo&quot;, device=&quot;cpu&quot;, n_jobs=1)
+</pre></div>
+</div>
+</div>
+<p>Train model:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><br/><span></span>scorer.fit(data_handler.train_utterances, data_handler.train_labels)
+</pre></div>
+</div>
+</div>
+<p>We will use the following utterances for testing:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>test_data = [
+    &quot;why is there a hold on my american saving bank account&quot;,
+    &quot;i am nost sure why my account is blocked&quot;,
+    &quot;why is there a hold on my capital one checking account&quot;,
+    &quot;i think my account is blocked but i do not know the reason&quot;,
+    &quot;can you tell me why is my bank account frozen&quot;,
+]
+</pre></div>
+</div>
+</div>
+<p>Predict:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><br/><span></span>scorer.predict(test_data)
+</pre></div>
+</div>
+</div>
+<p>In general, you can obtain rich information about inference. In case of linear scorer it’s empty</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><br/><span></span>predictions, metadata = scorer.predict_with_metadata(test_data)
+assert metadata is None  # noqa: S101
+</pre></div>
+</div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorials.html">Tutorials</a><ul>
+  <li><a href="index_scoring_modules.html">Scoring Modules</a><ul>
+      <li>Previous: <a href="index_scoring_modules.html" title="previous chapter">Scoring Modules</a></li>
+      <li>Next: <a href="../guides/index.html" title="next chapter">Guides</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/tutorials/tutorials.modules.scoring.linear.py.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

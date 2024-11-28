@@ -1,0 +1,348 @@
+autointent.context.data_handler
+===============================
+
+.. py:module:: autointent.context.data_handler
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   autointent.context.data_handler.DataHandler
+   autointent.context.data_handler.Dataset
+   autointent.context.data_handler.Intent
+   autointent.context.data_handler.Sample
+   autointent.context.data_handler.Tag
+
+
+Package Contents
+----------------
+
+.. py:class:: DataHandler(dataset, force_multilabel = False, random_seed = 0)
+
+   Data handler class.
+
+
+   .. py:attribute:: dataset
+
+
+   .. py:attribute:: regexp_patterns
+
+
+   .. py:attribute:: intent_descriptions
+
+
+   .. py:attribute:: tags
+
+
+   .. py:property:: multilabel
+      :type: bool
+
+
+      Check if the dataset is multilabel.
+
+      :return: True if the dataset is multilabel, False otherwise.
+
+
+
+   .. py:property:: n_classes
+      :type: int
+
+
+      Get the number of classes in the dataset.
+
+      :return: Number of classes.
+
+
+
+   .. py:property:: train_utterances
+      :type: list[str]
+
+
+      Get the training utterances.
+
+      :return: List of training utterances.
+
+
+
+   .. py:property:: train_labels
+      :type: list[autointent.custom_types.LabelType]
+
+
+      Get the training labels.
+
+      :return: List of training labels.
+
+
+
+   .. py:property:: test_utterances
+      :type: list[str]
+
+
+      Get the test utterances.
+
+      :return: List of test utterances.
+
+
+
+   .. py:property:: test_labels
+      :type: list[autointent.custom_types.LabelType]
+
+
+      Get the test labels.
+
+      :return: List of test labels.
+
+
+
+   .. py:property:: oos_utterances
+      :type: list[str]
+
+
+      Get the out-of-scope utterances.
+
+      :return: List of out-of-scope utterances if available, otherwise an empty list.
+
+
+
+   .. py:method:: has_oos_samples()
+
+      Check if there are out-of-scope samples.
+
+      :return: True if there are out-of-scope samples.
+
+
+
+   .. py:method:: dump()
+
+      Dump the dataset splits.
+
+      :return: Dataset dump.
+
+
+
+.. py:class:: Dataset(*args, intents, **kwargs)
+
+   Bases: :py:obj:`dict`\ [\ :py:obj:`str`\ , :py:obj:`datasets.Dataset`\ ]
+
+
+   Represents a dataset with associated metadata and utilities for processing.
+
+   :param args: Positional arguments to initialize the dataset.
+   :param intents: List of intents associated with the dataset.
+   :param kwargs: Additional keyword arguments to initialize the dataset.
+
+
+   .. py:attribute:: label_feature
+      :value: 'label'
+
+
+
+   .. py:attribute:: utterance_feature
+      :value: 'utterance'
+
+
+
+   .. py:attribute:: intents
+
+
+   .. py:property:: multilabel
+      :type: bool
+
+
+      Check if the dataset is multilabel.
+
+      :return: True if the dataset is multilabel, False otherwise.
+
+
+
+   .. py:property:: n_classes
+      :type: int
+
+
+      Get the number of classes in the training split.
+
+      :return: Number of classes.
+
+
+
+   .. py:method:: from_json(filepath)
+      :classmethod:
+
+
+      Load a dataset from a JSON file.
+
+      :param filepath: Path to the JSON file.
+      :return: Initialized Dataset object.
+
+
+
+   .. py:method:: from_dict(mapping)
+      :classmethod:
+
+
+      Load a dataset from a dictionary mapping.
+
+      :param mapping: Dictionary representing the dataset.
+      :return: Initialized Dataset object.
+
+
+
+   .. py:method:: from_datasets(repo_id)
+      :classmethod:
+
+
+      Load a dataset from a Hugging Face repository.
+
+      :param repo_id: ID of the Hugging Face repository.
+      :return: Initialized Dataset object.
+
+
+
+   .. py:method:: dump()
+
+      Convert the dataset splits to a dictionary of lists.
+
+      :return: Dictionary containing dataset splits as lists.
+
+
+
+   .. py:method:: encode_labels()
+
+      Encode dataset labels into one-hot or multilabel format.
+
+      :return: Self, with labels encoded.
+
+
+
+   .. py:method:: to_multilabel()
+
+      Convert dataset labels to multilabel format.
+
+      :return: Self, with labels converted to multilabel.
+
+
+
+   .. py:method:: push_to_hub(repo_id)
+
+      Push dataset splits to a Hugging Face repository.
+
+      :param repo_id: ID of the Hugging Face repository.
+
+
+
+   .. py:method:: get_tags()
+
+      Extract unique tags from the dataset's intents.
+
+      :return: List of tags with their associated intent IDs.
+
+
+
+   .. py:method:: get_n_classes(split)
+
+      Calculate the number of unique classes in a given split.
+
+      :param split: The split to analyze.
+      :return: Number of unique classes.
+
+
+
+.. py:class:: Intent(/, **data)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Represents an intent with its metadata and regular expressions.
+
+
+   .. py:attribute:: id
+      :type:  int
+
+
+   .. py:attribute:: name
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: tags
+      :type:  list[str]
+      :value: []
+
+
+
+   .. py:attribute:: regexp_full_match
+      :type:  list[str]
+      :value: []
+
+
+
+   .. py:attribute:: regexp_partial_match
+      :type:  list[str]
+      :value: []
+
+
+
+   .. py:attribute:: description
+      :type:  str | None
+      :value: None
+
+
+
+.. py:class:: Sample(/, **data)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Represents a sample with an utterance and an optional label.
+
+   :param utterance: The textual content of the sample.
+   :param label: The label(s) associated with the sample. Can be a single label (integer)
+                 or a list of labels (integers). Defaults to None for unlabeled samples.
+
+
+   .. py:attribute:: utterance
+      :type:  str
+
+
+   .. py:attribute:: label
+      :type:  autointent.custom_types.LabelType | None
+      :value: None
+
+
+
+   .. py:method:: validate_sample()
+
+      Validate the sample after model instantiation.
+
+      This method ensures that the `label` field adheres to the expected constraints:
+      - If `label` is provided, it must be a non-negative integer or a list of non-negative integers.
+      - Multilabel samples must have at least one valid label.
+
+      :raises ValueError: If the `label` field is empty for a multilabel sample
+                          or contains invalid (negative) values.
+      :return: The validated sample instance.
+
+
+
+.. py:class:: Tag(/, **data)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Represents a tag associated with intent classes.
+
+   Tags are used to define constraints such that if two intent classes share
+   a common tag, they cannot both be assigned to the same sample.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: intent_ids
+      :type:  list[int]
+
+

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>autointent.modules._base &#8212; AutoIntent 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for autointent.modules._base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base module for all modules.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">autointent.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">autointent.context.optimization_info</span> <span class="kn">import</span> <span class="n">Artifact</span>
+<span class="kn">from</span> <span class="nn">autointent.custom_types</span> <span class="kn">import</span> <span class="n">BaseMetadataDict</span>
+<span class="kn">from</span> <span class="nn">autointent.metrics</span> <span class="kn">import</span> <span class="n">METRIC_FN</span>
+
+
+<div class="viewcode-block" id="Module">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module">[docs]</a>
+<span class="k">class</span> <span class="nc">Module</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base module.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">metadata_dict_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;metadata.json&quot;</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">BaseMetadataDict</span>
+
+<div class="viewcode-block" id="Module.fit">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.fit">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the model.</span>
+
+<span class="sd">        :param args: Args to fit</span>
+<span class="sd">        :param kwargs: Kwargs to fit</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.score">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.score">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">metric_fn</span><span class="p">:</span> <span class="n">METRIC_FN</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate metric on test set and return metric value.</span>
+
+<span class="sd">        :param context: Context to score</span>
+<span class="sd">        :param metric_fn: Metric function</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.get_assets">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.get_assets">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_assets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Artifact</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return useful assets that represent intermediate data into context.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.clear_cache">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.clear_cache">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear cache.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.dump">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.dump">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dump all data needed for inference.</span>
+
+<span class="sd">        :param path: Path to dump</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.load">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.load">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load data from dump.</span>
+
+<span class="sd">        :param path: Path to load</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.predict">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.predict">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict on the input.</span>
+
+<span class="sd">        :param args: args to predict.</span>
+<span class="sd">        :param kwargs: kwargs to predict.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.predict_with_metadata">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.predict_with_metadata">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict_with_metadata</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict on the input with metadata.</span>
+
+<span class="sd">        :param args: args to predict.</span>
+<span class="sd">        :param kwargs: kwargs to predict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Module.from_context">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.from_context">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">from_context</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize self from context.</span>
+
+<span class="sd">        :param context: Context to init from.</span>
+<span class="sd">        :param kwargs: Additional kwargs.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Module.get_embedder_name">
+<a class="viewcode-back" href="../../../autoapi/autointent/modules/index.html#autointent.modules.Module.get_embedder_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_embedder_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Experimental method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">AutoIntent</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts.html">Key Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn/index.html">Learn AutoIntent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, DeepPavlov.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
