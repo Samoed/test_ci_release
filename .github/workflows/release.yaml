@@ -69,8 +69,8 @@ jobs:
       uses: sigstore/gh-action-sigstore-python@v3.0.0
       with:
         inputs: >-
-          ./dist/*.tar.gz
-          ./dist/*.whl
+          ./dist/test_ci_release*.tar.gz
+          ./dist/test_ci_release*.whl
   
     # - name: Upload artifact signatures to GitHub Release
     #   env:
