@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/test_ci_release  # Replace <package-name> with your PyPI project name
+      url: https://pypi.org/p/test_ci_release
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
@@ -72,7 +72,8 @@ jobs:
         inputs: >-
           ./dist/*.tar.gz
           ./dist/*.whl
-        release-signing-artifacts: false  # Prevent the action from uploading artifacts, because, by default it will uplpoad artifacts with tag name too
+        # Prevent the action from uploading artifacts, because, by default it will uplpoad artifacts with tag name, too
+        release-signing-artifacts: false
 
     - name: Upload artifact signatures to GitHub Release
       env:
