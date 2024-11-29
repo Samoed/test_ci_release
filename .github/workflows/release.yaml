@@ -70,8 +70,8 @@ jobs:
       uses: sigstore/gh-action-sigstore-python@v3.0.0
       with:
         inputs: >-
-          ./dist/test_ci_release*.tar.gz
-          ./dist/test_ci_release*.whl
+          ./dist/*.tar.gz
+          ./dist/*.whl
         release-signing-artifacts: false  # Prevent the action from uploading artifacts, because, by default it will uplpoad artifacts with tag name too
 
     - name: Upload artifacts to release
