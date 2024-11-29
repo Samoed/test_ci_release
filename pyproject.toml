@@ -7,7 +7,9 @@ readme = "README.md"
 packages = [
     { include = "autointent" },
 ]
-
+homepage = "https://deeppavlov.github.io/AutoIntent/"
+repository = "https://github.com/deeppavlov/AutoIntent"
+documentation = "https://deeppavlov.github.io/AutoIntent/"
 
 [tool.poetry.dependencies]
 python = "^3.10"
