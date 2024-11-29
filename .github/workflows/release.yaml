@@ -76,7 +76,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh release delete-asset ${{ github.event.release.tag_name }} 'v*' --yes
+        gh release delete-asset ${{ github.event.release.tag_name }} 'v*' --repo '${{ github.repository }}' --yes
   
     # - name: Upload artifact signatures to GitHub Release
     #   env:
